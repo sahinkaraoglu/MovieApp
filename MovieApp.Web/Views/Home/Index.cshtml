@@ -1,8 +1,31 @@
-﻿@{
+﻿@using MovieApp.Infrastructure.Models.MovieDb.PopularTvSeries
+@model PopularTvSeriesModel;
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="">
+    @* <h1>@Model.total_results</h1> *@
+
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model.results)
+            {
+                <div class="col-4">
+                    <div class="card">
+                        <img src="@(string.Concat("https://image.tmdb.org/t/p/original", item.backdrop_path))" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.name</h5>
+                            <p class="card-text">@item.overview</p>
+                            <a href="#" class="btn btn-primary">Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+
 </div>
+

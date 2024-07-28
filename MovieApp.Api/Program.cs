@@ -2,14 +2,20 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using MovieApp.Api.Context;
+using MovieApp.Application.Services.Jwt;
+using MovieApp.Infrastructure.Context;
+using MovieApp.Infrastructure.MovieDb;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+// Ýç içe olan classlarý json serialize ederken infinite loop'tan çýkmak için eklenen kod
+builder.Services.AddControllers()
+    .AddJsonOptions(e => e.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -27,9 +33,11 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 }).AddEntityFrameworkStores<MovieDbContext>()
 .AddDefaultTokenProviders();
 
+builder.Services.AddScoped<IJwtService, JwtService>();
 
+builder.Services.AddScoped<IMovieDbApi, MovieDbApi>();
 
-var key = Encoding.ASCII.GetBytes(builder.Configuration["JWT:KEY"]);
+var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
 
 builder.Services.AddAuthentication(options =>
 {
@@ -69,3 +77,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+// n-layered en popüler

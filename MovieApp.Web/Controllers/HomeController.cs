@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using MovieApp.Infrastructure.Models.MovieDb.PopularTvSeries;
 using MovieApp.Web.Models;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace MovieApp.Web.Controllers
 {
@@ -13,9 +15,15 @@ namespace MovieApp.Web.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:7063/api/auth/demo");
+            var content = await response.Content.ReadAsStringAsync();
+            client.Dispose();
+            var movieResponse = JsonSerializer.Deserialize<PopularTvSeriesModel>(content);
+
+            return View(movieResponse);
         }
 
         public IActionResult Privacy()

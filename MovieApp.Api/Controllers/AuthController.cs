@@ -1,25 +1,59 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.Data;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using MovieApp.Api.Context;
+using MovieApp.Application.Services.Jwt;
+using MovieApp.Infrastructure.Context;
+using MovieApp.Infrastructure.MovieDb;
+using System.Security.Claims;
 
 namespace MovieApp.Api.Controllers
 {
+    public class BaseController : ControllerBase
+    {
+        [NonAction]
+        public string GetUserId()
+        {
+            var req = (User.Identity as ClaimsIdentity).Claims.FirstOrDefault(e => e.Type == ClaimTypes.NameIdentifier);
+
+            // null check
+            if (req == null)
+            {
+                throw new Exception("Name identifier not found in claims");
+            }
+
+            // üstte yapılan işleme "error handling" deniyor
+            // eğer hata alınabilecek kod "handle" edilmediyse, "unhandled exception" deniyor
+
+            return req.Value;
+        }
+
+    }
+
+
     [Route("api/auth")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : BaseController
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        private readonly IJwtService _jwtService;
+        private readonly IMovieDbApi _movieDbApi;
+        public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IJwtService jwtService, IMovieDbApi movieDbApi)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _jwtService = jwtService;
+            _movieDbApi = movieDbApi;
         }
 
-        [HttpPost]
+        [HttpGet("demo")]
+        public async Task<IActionResult> GetMoviesAsync()
+        {
+            var res = await _movieDbApi.GetMoviesAsync();
+            return Ok(res);
+        }
+        
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestModel req)
         {
 
@@ -33,11 +67,47 @@ namespace MovieApp.Api.Controllers
             {
                 return BadRequest();
             }
+        }
 
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestModel req)
+        {
+            var result = await _signInManager.PasswordSignInAsync(req.Email, req.Password, isPersistent: false, false);
+
+            if (result.Succeeded)
+            {
+                var user = await _userManager.FindByEmailAsync(req.Email);
+                var token = _jwtService.GenerateJwtToken(user);
+                return Ok(new
+                {
+                    token = token
+                });
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("admin")]
+        [Authorize]
+        public async Task<IActionResult> Admin()
+        {
+            var userId = GetUserId();
+            return Ok(new
+            {
+                userId = userId
+            });
         }
     }
 
     public class RegisterRequestModel
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+
+    public class LoginRequestModel
     {
         public string Email { get; set; }
         public string Password { get; set; }
