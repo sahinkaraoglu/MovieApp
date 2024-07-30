@@ -12,6 +12,7 @@ namespace MovieApp.Infrastructure.Context
         }
 
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
     }
 
     public class ApplicationUser : IdentityUser
