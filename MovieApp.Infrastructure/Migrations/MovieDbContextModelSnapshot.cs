@@ -8,7 +8,7 @@ using MovieApp.Infrastructure.Context;
 
 #nullable disable
 
-namespace MovieApp.Api.Migrations
+namespace MovieApp.Infrastructure.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
     partial class MovieDbContextModelSnapshot : ModelSnapshot
@@ -155,7 +155,7 @@ namespace MovieApp.Api.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("MovieApp.Api.Context.ApplicationUser", b =>
+            modelBuilder.Entity("MovieApp.Domain.Entity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -220,6 +220,59 @@ namespace MovieApp.Api.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("MovieApp.Domain.Entity.ListMovie", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserListId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserListId");
+
+                    b.ToTable("ListMovie");
+                });
+
+            modelBuilder.Entity("MovieApp.Domain.Entity.UserList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserLists");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -231,7 +284,7 @@ namespace MovieApp.Api.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("MovieApp.Api.Context.ApplicationUser", null)
+                    b.HasOne("MovieApp.Domain.Entity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -240,7 +293,7 @@ namespace MovieApp.Api.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("MovieApp.Api.Context.ApplicationUser", null)
+                    b.HasOne("MovieApp.Domain.Entity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -255,7 +308,7 @@ namespace MovieApp.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MovieApp.Api.Context.ApplicationUser", null)
+                    b.HasOne("MovieApp.Domain.Entity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -264,11 +317,43 @@ namespace MovieApp.Api.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("MovieApp.Api.Context.ApplicationUser", null)
+                    b.HasOne("MovieApp.Domain.Entity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MovieApp.Domain.Entity.ListMovie", b =>
+                {
+                    b.HasOne("MovieApp.Domain.Entity.UserList", "UserList")
+                        .WithMany("ListMovies")
+                        .HasForeignKey("UserListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserList");
+                });
+
+            modelBuilder.Entity("MovieApp.Domain.Entity.UserList", b =>
+                {
+                    b.HasOne("MovieApp.Domain.Entity.ApplicationUser", "User")
+                        .WithMany("UserLists")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MovieApp.Domain.Entity.ApplicationUser", b =>
+                {
+                    b.Navigation("UserLists");
+                });
+
+            modelBuilder.Entity("MovieApp.Domain.Entity.UserList", b =>
+                {
+                    b.Navigation("ListMovies");
                 });
 #pragma warning restore 612, 618
         }

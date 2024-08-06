@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using MovieApp.Domain.Entity;
 using MovieApp.Infrastructure.Context;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

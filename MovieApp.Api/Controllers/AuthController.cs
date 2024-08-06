@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.Application.Services.Jwt;
+using MovieApp.Domain.Entity;
 using MovieApp.Infrastructure.Context;
 using MovieApp.Infrastructure.MovieDb;
 

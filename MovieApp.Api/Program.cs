@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MovieApp.Application.Services.Jwt;
+using MovieApp.Domain.Entity;
 using MovieApp.Infrastructure.Context;
 using MovieApp.Infrastructure.MovieDb;
 using System.Text;

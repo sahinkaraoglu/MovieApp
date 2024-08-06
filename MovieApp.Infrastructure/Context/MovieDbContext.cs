@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MovieApp.Domain.Entity;
+using System.Reflection.Metadata;
 
 namespace MovieApp.Infrastructure.Context
 {
@@ -11,12 +12,21 @@ namespace MovieApp.Infrastructure.Context
         {
         }
 
-        public DbSet<Movie> Movies { get; set; }
-        public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<ListMovie> ListMovie { get; set; }
+        public DbSet<UserList> UserLists{ get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(e => e.UserLists)
+                .WithOne(e => e.User)
+                .HasForeignKey(e => e.UserId)
+                .HasPrincipalKey(e => e.Id);
+
+            base.OnModelCreating(modelBuilder);
+        }
+
     }
 
-    public class ApplicationUser : IdentityUser
-    {
 
-    }
 }

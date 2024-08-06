@@ -1,4 +1,5 @@
-﻿using MovieApp.Infrastructure.Context;
+﻿using MovieApp.Domain.Entity;
+using MovieApp.Infrastructure.Context;
 
 namespace MovieApp.Application.Services.Jwt
 {
