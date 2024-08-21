@@ -75,9 +75,9 @@ namespace MovieApp.Api.Controllers
 
             // Send token to email            
 
-            var apiKey = "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"; // Replace with your Brevo API key
+            //var apiKey = "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"; // Replace with your Brevo API key
 
-            Configuration.Default.ApiKey.Add("api-key", apiKey);
+            //Configuration.Default.ApiKey.Add("api-key", apiKey);
 
             var _emailApi = new TransactionalEmailsApi();
 
