@@ -82,6 +82,7 @@ namespace MovieApp.Infrastructure.Models.MovieDb.TvSeriesDetail
     public class Season
     {
         public string air_date { get; set; }
+        //public string air_date { get; set; }
         public int episode_count { get; set; }
         public int id { get; set; }
         public string name { get; set; }
