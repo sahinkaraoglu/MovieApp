@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieApp.Infrastructure.MovieDb;
+using Newtonsoft.Json;
+using StackExchange.Redis;
 
 namespace MovieApp.Api.Controllers
 {
@@ -16,7 +18,21 @@ namespace MovieApp.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetMoviesAsync()
         {
+            var movieKey = "movies";
+            var redis = ConnectionMultiplexer.Connect("localhost:6379");
+            var db = redis.GetDatabase();
+
+            var cacheMovies = await db.StringGetAsync(movieKey);
+
+            //if (cacheMovies.HasValue)
+            //{
+                
+            //    return Ok(cacheMovies.ToString());
+            //}
+            
             var res = await _movieDbApi.GetMoviesAsync();
+            await db.StringSetAsync(movieKey, JsonConvert.SerializeObject(res));
+
             return Ok(res);
         }
 
