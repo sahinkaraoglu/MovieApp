@@ -7,6 +7,8 @@
     <p>@Model.original_name </p>
 </h1>
 <h5>
+    <img src="@(string.Concat("https://image.tmdb.org/t/p/original", Model.backdrop_path))" class="img-fluid" alt="@Model.original_name" style="max-width: 300px; height: auto;" />
+    <p>
     <p>Bölüm Sayısı: @Model.number_of_episodes</p>
     <p>Sezon Sayısı: @Model.number_of_seasons</p>
     <p>Orjinal Dil: @Model.original_language</p>

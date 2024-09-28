@@ -53,6 +53,7 @@ namespace MovieApp.Infrastructure.Models.MovieDb.TvSeriesDetail
         //public List<Genre> genres { get; set; }
         //public string homepage { get; set; }
         public int id { get; set; }
+        public string backdrop_path { get; set; }
         public bool in_production { get; set; }
         //public List<string> languages { get; set; }
         //public string last_air_date { get; set; }
