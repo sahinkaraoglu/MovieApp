@@ -2,7 +2,13 @@
 @model TvSeriesDetailModel;
 
 
+
 <h1>
-    @Model.original_name
+    <p>@Model.original_name </p>
 </h1>
-<div>@Model.in_production</div>
+<h5>
+    <p>Bölüm Sayısı: @Model.number_of_episodes</p>
+    <p>Sezon Sayısı: @Model.number_of_seasons</p>
+    <p>Orjinal Dil: @Model.original_language</p>
+</h5>
+
