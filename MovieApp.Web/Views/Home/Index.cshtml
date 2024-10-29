@@ -17,7 +17,13 @@
                         <img src="@(string.Concat("https://image.tmdb.org/t/p/original", item.backdrop_path))" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">@item.name</h5>
-                            <p class="card-text">@item.overview</p>
+                            @*  <p class="card-text">@item.overview</p>*@
+                        <p class="card-text">
+                                @(item.overview != null && item.overview.Length > 200
+                                    ? item.overview.Substring(0, 200) + "..."
+                                    : item.overview)
+                            </p>
+
                             <a href="/movie/@item.id" class="btn btn-primary">Detay</a>
                         </div>
                     </div>

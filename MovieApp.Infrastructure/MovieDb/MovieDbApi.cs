@@ -15,7 +15,8 @@ namespace MovieApp.Infrastructure.MovieDb
         public async Task<PopularTvSeriesModel> GetMoviesAsync()
         {
             HttpClient client = new HttpClient();
-            var response = await client.GetAsync("https://api.themoviedb.org/3/discover/tv?include_adult=false&language=tr-TR&page=1&sort_by=popularity.desc&api_key=c53f45afaec37433217a385a706e45f1");
+            var response = await client.GetAsync("https://api.themoviedb.org/3/discover/tv?include_adult=false&language=en-US&page=1&sort_by=vote_average.desc&vote_count.gte=200&api_key=c53f45afaec37433217a385a706e45f1");
+            //var response = await client.GetAsync("https://api.themoviedb.org/3/discover/tv?include_adult=false&language=tr-TR&page=1&sort_by=popularity.desc&api_key=c53f45afaec37433217a385a706e45f1");
             var content = await response.Content.ReadAsStringAsync();
 
             // JsonSerializer - .net'in kendi paketi
