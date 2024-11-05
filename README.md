@@ -1,1 +1,1 @@
-![Ekran Alıntısı](https://github.com/user-attachments/assets/ec1de271-caab-4188-bc61-cc1f020f4215)
+![Ekran Alıntısı](https://github.com/user-attachments/assets/16dab5b3-4192-4fd3-89c1-834c595cd58c)
