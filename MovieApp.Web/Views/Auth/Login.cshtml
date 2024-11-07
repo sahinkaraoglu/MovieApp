@@ -1,21 +1,30 @@
-﻿
-
-<form id="login-form">
-    <div class="mb-3">
-        <label for="email" class="form-label">E-posta</label>
-        <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text">E-postanızı asla başka biriyle paylaşmayacağız.</div>
+﻿<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg rounded-3">
+                <div class="card-body p-5">
+                    <h3 class="card-title text-center mb-4 fw-bold text-primary">Giriş Yap</h3>
+                    <form id="login-form">
+                        <div class="mb-4">
+                            <label for="email" class="form-label fw-semibold">E-posta</label>
+                            <input type="email" class="form-control form-control-lg" id="email" aria-describedby="emailHelp" placeholder="E-posta adresinizi giriniz">
+                            <div id="emailHelp" class="form-text">E-postanızı asla başka biriyle paylaşmayacağız.</div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-semibold">Parola</label>
+                            <input type="password" class="form-control form-control-lg" id="password" placeholder="Parolanızı giriniz">
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <label class="form-check-label" for="exampleCheck1">Beni Hatırla</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" style="border-radius: 5px;">Giriş Yap</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-        <label for="password" class="form-label">Parola</label>
-        <input type="password" class="form-control" id="password">
-    </div>
-    <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Beni Hatırla</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Gönder</button>
-</form>
+</div>
 
 @section Scripts{
     <script>
@@ -34,19 +43,18 @@
                     contentType: 'application/json',
                     data: JSON.stringify(loginData),
                     success: function(response) {
-
                     },
                     error: function (xhr) {
-                        console.log("error")
+                        console.log("error");
                     }
-                })
+                });
 
-            })
-        })
+            });
+        });
     </script>
 }
 
- @*                    {
+@*                    {
   "email": "admin@test.com",
   "password": "admin123*"
 } *@
