@@ -1,1 +1,1 @@
-![Ekran Alıntısı](https://github.com/user-attachments/assets/16dab5b3-4192-4fd3-89c1-834c595cd58c)
+![movieapp](https://github.com/user-attachments/assets/c4de9d6b-6b08-494e-b15d-6720c50ff358)
