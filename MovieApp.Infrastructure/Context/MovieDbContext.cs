@@ -14,11 +14,18 @@ namespace MovieApp.Infrastructure.Context
 
         public DbSet<ListMovie> ListMovie { get; set; }
         public DbSet<UserList> UserLists{ get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ApplicationUser>()
                 .HasMany(e => e.UserLists)
+                .WithOne(e => e.User)
+                .HasForeignKey(e => e.UserId)
+                .HasPrincipalKey(e => e.Id);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(e => e.Comments)
                 .WithOne(e => e.User)
                 .HasForeignKey(e => e.UserId)
                 .HasPrincipalKey(e => e.Id);

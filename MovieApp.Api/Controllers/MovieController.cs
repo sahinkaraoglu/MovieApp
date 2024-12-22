@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MovieApp.Infrastructure.Context;
 using MovieApp.Infrastructure.MovieDb;
 using Newtonsoft.Json;
 using StackExchange.Redis;
@@ -10,9 +12,11 @@ namespace MovieApp.Api.Controllers
     public class MovieController : BaseController
     {
         private readonly IMovieDbApi _movieDbApi;
-        public MovieController(IMovieDbApi movieDbApi)
+        private readonly MovieDbContext _context;
+        public MovieController(IMovieDbApi movieDbApi, MovieDbContext context)
         {
             _movieDbApi = movieDbApi;
+            _context = context;
         }
 
         [HttpGet]
@@ -40,7 +44,18 @@ namespace MovieApp.Api.Controllers
         public async Task<IActionResult> GetMovieByIdAsync(int id)
         {
             var res = await _movieDbApi.GetMovieByIdAsync(id);
-            return Ok(res);
+
+            var comments = await _context
+                .Comments
+                .Include(e => e.User)
+                .Where(e => e.MovieId == id)
+                .ToListAsync();
+
+            return Ok(new
+            {
+                data = res,
+                comments = comments
+            });
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿@using MovieApp.Infrastructure.Models.MovieDb.TvSeriesDetail
-@model TvSeriesDetailModel;
+@model MovieDetailResponseModel;
 
 
 
@@ -9,38 +9,87 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Orjinal Adı: @Model.original_name </h5>
-                    <h5 class="card-title">@Model.original_name </h5>
+                    <h5 class="card-title">Orjinal Adı: @Model.data.original_name </h5>
+                    <h5 class="card-title">@Model.data.original_name </h5>
                     <div class="w-100 mt-3"></div>
-                    <p class="card-text"><img src="@(string.Concat("https://image.tmdb.org/t/p/original", Model.backdrop_path))" class="img-fluid" alt="@Model.original_name" style="max-width: 300px; height: auto;" /></p>
-                    
-                    <p class="card-text">Bölüm Sayısı: @Model.number_of_episodes</p>
-                    <p class="card-text">Sezon Sayısı: @Model.number_of_seasons</p>
+                    <p class="card-text"><img src="@(string.Concat("https://image.tmdb.org/t/p/original", Model.data.backdrop_path))" class="img-fluid" alt="@Model.data.original_name" style="max-width: 300px; height: auto;" /></p>
+
+                    <p class="card-text">Bölüm Sayısı: @Model.data.number_of_episodes</p>
+                    <p class="card-text">Sezon Sayısı: @Model.data.number_of_seasons</p>
                     <p class="card-text">
-                        Orjinal Dil:  @string.Join(", ",@Model.spoken_languages.Select(g => g.name))
+                        Orjinal Dil:  @string.Join(", ", @Model.data.spoken_languages.Select(g => g.name))
                     </p>
-                    <p class="card-text">Genel Bakış: @Model.overview</p>
-                    <p class="card-text">Tarz: @Model.type</p>
+                    <p class="card-text">Genel Bakış: @Model.data.overview</p>
+                    <p class="card-text">Tarz: @Model.data.type</p>
 
                     <p class="card-text">
-                        Tür: @string.Join(", ", Model.genres.Select(g => g.name))
+                        Tür: @string.Join(", ", Model.data.genres.Select(g => g.name))
                     </p>
                     <p class="card-text">
-                        Platform: @string.Join(", ", @Model.networks.Select(g => g.name))
+                        Platform: @string.Join(", ", @Model.data.networks.Select(g => g.name))
                     </p>
                     <p class="card-text">
-                        Ülke: @string.Join(", ", @Model.origin_country)
+                        Ülke: @string.Join(", ", @Model.data.origin_country)
                     </p>
                 </div>
             </div>
         </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
                     <h5 class="card-title">Poster </h5>
-                    <p class="card-text"><img src="@(string.Concat("https://image.tmdb.org/t/p/original", Model.poster_path))" class="img-fluid" alt="@Model.original_name" style="max-width: 300px; height: auto;" /></p>
+                    <p class="card-text"><img src="@(string.Concat("https://image.tmdb.org/t/p/original", Model.data.poster_path))" class="img-fluid" alt="@Model.data.original_name" style="max-width: 300px; height: auto;" /></p>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="row">
+        @foreach (var item in Model.comments)
+        {
+            <div class="col-12 mt-3">
+                <h1>@item.User.UserName</h1>
+                <h3>@item.Text</h3>
+            </div>
+        }
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form id="comment-form">
+                <div class="mb-3">
+                    <label for="commentArea" class="form-label">Yorumunuz</label>
+                    <textarea class="form-control" id="commentArea" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Yorum Yap</button>
+            </form>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#comment-form").on('submit', function (e) {
+                e.preventDefault();
+
+                var commentData = {
+                    comment: $("#commentArea").val(),
+                }
+
+                $.ajax({
+                    url: '/movie/@Model.data.id/comment',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(commentData),
+                    success: function (response) {
+                        window.location.reload()
+                    },
+                    error: function (xhr) {
+                        console.log("error");
+                    }
+                });
+
+            });
+        });
+    </script>
+}

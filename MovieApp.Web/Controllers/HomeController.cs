@@ -34,9 +34,34 @@ namespace MovieApp.Web.Controllers
             var response = await client.GetAsync($"https://localhost:7063/api/movie/{id}");
             var content = await response.Content.ReadAsStringAsync();
             client.Dispose();
-            var movieResponse = JsonSerializer.Deserialize<TvSeriesDetailModel>(content);
+            var movieResponse = JsonSerializer.Deserialize<MovieDetailResponseModel>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
 
             return View(movieResponse);
+        }
+
+        [HttpPost("movie/{id:int}/comment")]
+        public async Task<IActionResult> SendComment([FromRoute] int id, [FromBody] SendCommentRequest req)
+        {
+            var userJwt = HttpContext.Session.GetString("jwt");
+
+            if (string.IsNullOrEmpty(userJwt))
+                return Redirect("/Auth/Login");
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {userJwt}");
+
+            var response = await client.PostAsJsonAsync("https://localhost:7063/api/comment", new
+            {
+                id = id,
+                comment = req.Comment
+            });
+            var content = await response.Content.ReadAsStringAsync();
+            client.Dispose();
+
+            return Ok();
         }
 
         public IActionResult Privacy()
@@ -48,6 +73,11 @@ namespace MovieApp.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public class SendCommentRequest
+        {
+            public string Comment { get; set; }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MovieApp.Domain.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,6 +42,12 @@ namespace MovieApp.Infrastructure.Models.MovieDb.TvSeriesDetail
     {
         public string iso_3166_1 { get; set; }
         public string name { get; set; }
+    }
+
+    public class MovieDetailResponseModel
+    {
+        public TvSeriesDetailModel data { get; set; }
+        public List<Comment>? comments { get; set; }
     }
 
     public class TvSeriesDetailModel
