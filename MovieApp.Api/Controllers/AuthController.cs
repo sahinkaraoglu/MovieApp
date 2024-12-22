@@ -57,6 +57,7 @@ namespace MovieApp.Api.Controllers
                 var token = _jwtService.GenerateJwtToken(user);
                 return Ok(new
                 {
+                    name = user.UserName,
                     token = token
                 });
             }

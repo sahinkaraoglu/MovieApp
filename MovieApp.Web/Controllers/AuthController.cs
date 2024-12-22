@@ -14,7 +14,7 @@ namespace MovieApp.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] LoginRequestModel loginReq )
+        public async Task<IActionResult> Login([FromBody] LoginRequestModel loginReq)
         {
             HttpClient client = new HttpClient();
             var response = await client.PostAsJsonAsync("https://localhost:7063/api/auth/login", loginReq);
@@ -23,6 +23,7 @@ namespace MovieApp.Web.Controllers
             var loginResponse = JsonSerializer.Deserialize<LoginResponseModel>(content);
 
             HttpContext.Session.SetString("jwt", loginResponse.Token);
+            HttpContext.Session.SetString("name", loginResponse.Name);
 
             return Redirect("/");
         }
@@ -44,6 +45,13 @@ namespace MovieApp.Web.Controllers
 
             return Redirect("/");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            HttpContext.Session.Clear();
+            return Redirect("/");
+        }
     }
 
     public class LoginRequestModel
@@ -56,5 +64,7 @@ namespace MovieApp.Web.Controllers
     {
         [JsonPropertyName("token")]
         public string Token { get; set; }
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
     }
 }

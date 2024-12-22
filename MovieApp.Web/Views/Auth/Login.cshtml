@@ -43,6 +43,7 @@
                     contentType: 'application/json',
                     data: JSON.stringify(loginData),
                     success: function(response) {
+                        window.location.href = "/";
                     },
                     error: function (xhr) {
                         console.log("error");
