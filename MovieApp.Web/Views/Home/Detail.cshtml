@@ -72,18 +72,6 @@
         }
     </div>
 
-    <div class="row">
-        @foreach (var item in Model.comments)
-        {
-            <div class="col-12 mt-3">
-                <div class="comment-content w-100">
-                    <h1 style="font-size: 20px">@item.User.UserName</h1>
-                    <h3 style="font-size: 20px" class="comment-text">@item.Text</h3>
-                </div>
-            </div>
-        }
-    </div>
-
     @if (Context.Session.GetString("jwt") != null)
     {
         <div class="row">
