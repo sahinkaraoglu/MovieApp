@@ -64,6 +64,26 @@ namespace MovieApp.Web.Controllers
             return Ok();
         }
 
+        [HttpDelete("movie/{movieId:int}/comment/{commentId:int}")]
+        public async Task<IActionResult> DeleteComment([FromRoute] int movieId, [FromRoute] int commentId)
+        {
+            var userJwt = HttpContext.Session.GetString("jwt");
+
+            if (string.IsNullOrEmpty(userJwt))
+                return Unauthorized();
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {userJwt}");
+
+            var response = await client.DeleteAsync($"https://localhost:7063/api/comment/{commentId}");
+            
+            if (!response.IsSuccessStatusCode)
+                return BadRequest();
+
+            client.Dispose();
+            return Ok();
+        }
+
         public IActionResult Privacy()
         {
             return View();

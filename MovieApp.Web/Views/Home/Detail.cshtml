@@ -1,4 +1,4 @@
-﻿@using MovieApp.Infrastructure.Models.MovieDb.TvSeriesDetail
+@using MovieApp.Infrastructure.Models.MovieDb.TvSeriesDetail
 @model MovieDetailResponseModel;
 
 
@@ -47,9 +47,17 @@
     <div class="row">
         @foreach (var item in Model.comments)
         {
-            <div class="col-12 mt-3">
-                <h1 style ="font-size: 20px">@item.User.UserName</h1>
-                <h3 style ="font-size: 20px">@item.Text</h3>
+            <div class="col-12 mt-3 d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 style="font-size: 20px">@item.User.UserName</h1>
+                    <h3 style="font-size: 20px">@item.Text</h3>
+                </div>
+                @if (Context.Session.GetString("jwt") != null && item.User.UserName == Context.Session.GetString("name"))
+                {
+                    <button class="btn btn-danger delete-comment" data-comment-id="@item.Id">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                }
             </div>
         }
     </div>
@@ -89,6 +97,41 @@
                     }
                 });
 
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.delete-comment').click(function() {
+                const commentId = $(this).data('comment-id');
+                const button = $(this);
+
+                if (confirm('Bu yorumu silmek istediğinize emin misiniz?')) {
+                    $.ajax({
+                        url: `/movie/@Model.data.id/comment/${commentId}`,
+                        type: 'DELETE',
+                        headers: {
+                            'Authorization': 'Bearer @Context.Session.GetString("jwt")'
+                        },
+                        success: function() {
+                            button.closest('.col-12').fadeOut(400, function() {
+                                $(this).remove();
+                            });
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 401) {
+                                alert('Bu yorumu silme yetkiniz yok.');
+                            } else if (xhr.status === 404) {
+                                alert('Yorum bulunamadı. Silinmiş olabilir.');
+                                button.closest('.col-12').fadeOut(400, function() {
+                                    $(this).remove();
+                                });
+                            } else {
+                                alert('Yorum silinemedi. Lütfen tekrar deneyin.');
+                            }
+                        }
+                    });
+                }
             });
         });
     </script>

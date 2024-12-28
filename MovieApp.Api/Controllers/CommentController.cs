@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.Api.Model.Comment;
 using MovieApp.Domain.Entity;
@@ -31,6 +31,24 @@ namespace MovieApp.Api.Controllers
                 MovieId = req.Id
             });
 
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteComment(int id)
+        {
+            var userId = GetUserId();
+            var comment = await _context.Comments.FindAsync(id);
+
+            if (comment == null)
+                return NotFound();
+
+            if (comment.UserId != userId)
+                return Unauthorized();
+
+            _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
 
             return Ok();
