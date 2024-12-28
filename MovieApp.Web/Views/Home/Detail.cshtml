@@ -1,4 +1,5 @@
 @using MovieApp.Infrastructure.Models.MovieDb.TvSeriesDetail
+@using Microsoft.AspNetCore.Http
 @model MovieDetailResponseModel;
 
 <div class="container mt-5">
@@ -70,17 +71,44 @@
             </div>
         }
     </div>
+
     <div class="row">
-        <div class="col-12">
-            <form id="comment-form">
-                <div class="mb-3">
-                    <label for="commentArea" class="form-label">Yorumunuz</label>
-                    <textarea class="form-control" id="commentArea" rows="3"></textarea>
+        @foreach (var item in Model.comments)
+        {
+            <div class="col-12 mt-3">
+                <div class="comment-content w-100">
+                    <h1 style="font-size: 20px">@item.User.UserName</h1>
+                    <h3 style="font-size: 20px" class="comment-text">@item.Text</h3>
                 </div>
-                <button type="submit" class="btn btn-primary">Yorum Yap</button>
-            </form>
-        </div>
+            </div>
+        }
     </div>
+
+    @if (Context.Session.GetString("jwt") != null)
+    {
+        <div class="row">
+            <div class="col-12">
+                <form id="comment-form">
+                    <div class="mb-3">
+                        <label for="commentArea" class="form-label">Yorumunuz</label>
+                        <textarea class="form-control" id="commentArea" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Yorum Yap</button>
+                </form>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="alert alert-info">
+                    Yorum yapabilmek için lütfen <a href="/Auth/Login">giriş yapın</a>.
+                </div>
+            </div>
+        </div>
+    }
+
 </div>
 
 <style>
