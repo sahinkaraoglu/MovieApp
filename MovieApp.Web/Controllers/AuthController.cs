@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using MovieApp.Infrastructure.Models.MovieDb.PopularTvSeries;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -16,16 +16,35 @@ namespace MovieApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginRequestModel loginReq)
         {
-            HttpClient client = new HttpClient();
-            var response = await client.PostAsJsonAsync("https://localhost:7063/api/auth/login", loginReq);
-            var content = await response.Content.ReadAsStringAsync();
-            client.Dispose();
-            var loginResponse = JsonSerializer.Deserialize<LoginResponseModel>(content);
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    var response = await client.PostAsJsonAsync("https://localhost:7063/api/auth/login", loginReq);
 
-            HttpContext.Session.SetString("jwt", loginResponse.Token);
-            HttpContext.Session.SetString("name", loginResponse.Name);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        return BadRequest(new { message = "Hatalı e-posta veya parola." });
+                    }
 
-            return Redirect("/");
+                    var content = await response.Content.ReadAsStringAsync();
+                    var loginResponse = JsonSerializer.Deserialize<LoginResponseModel>(content);
+
+                    if (loginResponse == null || string.IsNullOrEmpty(loginResponse.Token))
+                    {
+                        return BadRequest(new { message = "Giriş işlemi başarısız oldu." });
+                    }
+
+                    HttpContext.Session.SetString("jwt", loginResponse.Token);
+                    HttpContext.Session.SetString("name", loginResponse.Name);
+
+                    return Ok(new { redirectUrl = "/" });
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new { message = "Bir hata oluştu. Lütfen tekrar deneyin." });
+            }
         }
 
         [HttpGet]
@@ -36,18 +55,18 @@ namespace MovieApp.Web.Controllers
             if (string.IsNullOrEmpty(userJwt))
                 return Redirect("/Auth/Login");
 
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {userJwt}");
-
-            var response = await client.GetAsync("https://localhost:7063/api/auth/admin");
-            var content = await response.Content.ReadAsStringAsync();
-            client.Dispose();
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {userJwt}");
+                var response = await client.GetAsync("https://localhost:7063/api/auth/admin");
+                await response.Content.ReadAsStringAsync();
+            }
 
             return Redirect("/");
         }
 
         [HttpGet]
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
             HttpContext.Session.Clear();
             return Redirect("/");

@@ -1,4 +1,4 @@
-﻿<div class="container mt-5">
+<div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow-lg rounded-3">
@@ -19,6 +19,8 @@
                             <label class="form-check-label" for="exampleCheck1">Beni Hatırla</label>
                         </div>
                         <button type="submit" class="btn btn-primary w-100" style="border-radius: 5px;">Giriş Yap</button>
+                        <div class="alert alert-danger mt-3" id="login-error" style="display: none; font-size: 14px;">
+                        </div>
                     </form>
                 </div>
             </div>
@@ -31,6 +33,12 @@
         $(document).ready(function() {
             $("#login-form").on('submit', function (e) {
                 e.preventDefault();
+
+                $("#login-error").hide();
+
+                const submitBtn = $(this).find('button[type="submit"]');
+                const originalBtnText = submitBtn.html();
+                submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Giriş yapılıyor...');
 
                 var loginData = {
                     email: $("#email").val(),
@@ -46,10 +54,17 @@
                         window.location.href = "/";
                     },
                     error: function (xhr) {
-                        console.log("error");
+                        let errorMessage = "Bir hata oluştu. Lütfen tekrar deneyin.";
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+                        $("#login-error").text(errorMessage).fadeIn();
+                        
+                        submitBtn.prop('disabled', false).html(originalBtnText);
+                        
+                        $("#password").val('').focus();
                     }
                 });
-
             });
         });
     </script>
