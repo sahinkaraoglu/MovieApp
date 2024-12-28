@@ -53,6 +53,24 @@ namespace MovieApp.Api.Controllers
 
             return Ok();
         }
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateComment(int id, [FromBody] UpdateCommentRequestModel req)
+        {
+            var userId = GetUserId();
+            var comment = await _context.Comments.FindAsync(id);
+
+            if (comment == null)
+                return NotFound();
+
+            if (comment.UserId != userId)
+                return Unauthorized();
+
+            comment.Text = req.Comment;
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 
 }

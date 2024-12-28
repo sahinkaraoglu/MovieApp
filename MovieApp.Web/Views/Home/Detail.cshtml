@@ -1,9 +1,6 @@
 @using MovieApp.Infrastructure.Models.MovieDb.TvSeriesDetail
 @model MovieDetailResponseModel;
 
-
-
-
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-6">
@@ -47,16 +44,28 @@
     <div class="row">
         @foreach (var item in Model.comments)
         {
-            <div class="col-12 mt-3 d-flex justify-content-between align-items-center">
-                <div>
+            <div class="col-12 mt-3">
+                <div class="comment-content w-100">
                     <h1 style="font-size: 20px">@item.User.UserName</h1>
-                    <h3 style="font-size: 20px">@item.Text</h3>
+                    <h3 style="font-size: 20px" class="comment-text">@item.Text</h3>
+                    <textarea class="form-control edit-comment-text" style="display: none; min-height: 100px; width: 100%; margin: 10px 0; font-size: 16px; padding: 10px;">@item.Text</textarea>
                 </div>
                 @if (Context.Session.GetString("jwt") != null && item.User.UserName == Context.Session.GetString("name"))
                 {
-                    <button class="btn btn-danger delete-comment" data-comment-id="@item.Id">
-                        <i class="fas fa-trash"></i> Delete
-                    </button>
+                    <div class="comment-actions mt-2">
+                        <button class="btn btn-primary edit-comment" data-comment-id="@item.Id">
+                            <i class="fas fa-edit"></i> Düzenle
+                        </button>
+                        <button class="btn btn-success save-comment" data-comment-id="@item.Id" style="display: none;">
+                            <i class="fas fa-save"></i> Kaydet
+                        </button>
+                        <button class="btn btn-secondary cancel-edit" style="display: none;">
+                            <i class="fas fa-times"></i> İptal
+                        </button>
+                        <button class="btn btn-danger delete-comment" data-comment-id="@item.Id">
+                            <i class="fas fa-trash"></i> Sil
+                        </button>
+                    </div>
                 }
             </div>
         }
@@ -73,6 +82,37 @@
         </div>
     </div>
 </div>
+
+<style>
+    .comment-content {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    .comment-text {
+        margin: 10px 0;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    .edit-comment-text {
+        resize: vertical;
+        border: 2px solid #007bff;
+        border-radius: 8px;
+    }
+
+    .comment-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .comment-actions button {
+        min-width: 100px;
+    }
+</style>
 
 @section Scripts {
     <script>
@@ -102,10 +142,11 @@
     </script>
     <script>
         $(document).ready(function() {
+            // Delete comment functionality
             $('.delete-comment').click(function() {
                 const commentId = $(this).data('comment-id');
                 const button = $(this);
-
+                
                 if (confirm('Bu yorumu silmek istediğinize emin misiniz?')) {
                     $.ajax({
                         url: `/movie/@Model.data.id/comment/${commentId}`,
@@ -132,6 +173,77 @@
                         }
                     });
                 }
+            });
+
+            // Edit comment functionality
+            $('.edit-comment').click(function() {
+                const commentContainer = $(this).closest('.col-12');
+                const commentText = commentContainer.find('.comment-text');
+                const editTextarea = commentContainer.find('.edit-comment-text');
+                
+                // Show edit interface
+                commentText.hide();
+                editTextarea.show();
+                $(this).hide();
+                commentContainer.find('.delete-comment').hide();
+                commentContainer.find('.save-comment, .cancel-edit').show();
+            });
+
+            // Cancel edit
+            $('.cancel-edit').click(function() {
+                const commentContainer = $(this).closest('.col-12');
+                const commentText = commentContainer.find('.comment-text');
+                const editTextarea = commentContainer.find('.edit-comment-text');
+                
+                // Restore original text and hide edit interface
+                editTextarea.hide();
+                commentText.show();
+                commentContainer.find('.edit-comment, .delete-comment').show();
+                commentContainer.find('.save-comment, .cancel-edit').hide();
+                
+                // Reset textarea content
+                editTextarea.val(commentText.text());
+            });
+
+            // Save edited comment
+            $('.save-comment').click(function() {
+                const commentId = $(this).data('comment-id');
+                const commentContainer = $(this).closest('.col-12');
+                const commentText = commentContainer.find('.comment-text');
+                const editTextarea = commentContainer.find('.edit-comment-text');
+                const newText = editTextarea.val();
+
+                $.ajax({
+                    url: `/movie/@Model.data.id/comment/${commentId}`,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ comment: newText }),
+                    headers: {
+                        'Authorization': 'Bearer @Context.Session.GetString("jwt")'
+                    },
+                    success: function() {
+                        // Update displayed text
+                        commentText.text(newText);
+                        
+                        // Hide edit interface
+                        editTextarea.hide();
+                        commentText.show();
+                        commentContainer.find('.edit-comment, .delete-comment').show();
+                        commentContainer.find('.save-comment, .cancel-edit').hide();
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 401) {
+                            alert('Bu yorumu düzenleme yetkiniz yok.');
+                        } else if (xhr.status === 404) {
+                            alert('Yorum bulunamadı. Silinmiş olabilir.');
+                            commentContainer.fadeOut(400, function() {
+                                $(this).remove();
+                            });
+                        } else {
+                            alert('Yorum düzenlenemedi. Lütfen tekrar deneyin.');
+                        }
+                    }
+                });
             });
         });
     </script>

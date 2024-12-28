@@ -84,6 +84,29 @@ namespace MovieApp.Web.Controllers
             return Ok();
         }
 
+        [HttpPut("movie/{movieId:int}/comment/{commentId:int}")]
+        public async Task<IActionResult> UpdateComment([FromRoute] int movieId, [FromRoute] int commentId, [FromBody] UpdateCommentRequest req)
+        {
+            var userJwt = HttpContext.Session.GetString("jwt");
+
+            if (string.IsNullOrEmpty(userJwt))
+                return Unauthorized();
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {userJwt}");
+
+            var response = await client.PutAsJsonAsync($"https://localhost:7063/api/comment/{commentId}", new
+            {
+                comment = req.Comment
+            });
+
+            if (!response.IsSuccessStatusCode)
+                return BadRequest();
+
+            client.Dispose();
+            return Ok();
+        }
+
         public IActionResult Privacy()
         {
             return View();
@@ -96,6 +119,11 @@ namespace MovieApp.Web.Controllers
         }
 
         public class SendCommentRequest
+        {
+            public string Comment { get; set; }
+        }
+
+        public class UpdateCommentRequest
         {
             public string Comment { get; set; }
         }
