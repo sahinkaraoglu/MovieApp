@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MovieApp.Api.Model.Comment;
 using MovieApp.Domain.Entity;
 using MovieApp.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace MovieApp.Api.Controllers
 {
@@ -14,6 +15,31 @@ namespace MovieApp.Api.Controllers
         public CommentController(MovieDbContext context)
         {
             _context = context;
+        }
+
+        [HttpGet("movie/{movieId:int}")]
+        public async Task<IActionResult> GetMovieComments(int movieId)
+        {
+            var comments = await _context.Comments
+                .Where(c => c.MovieId == movieId)
+                .Include(c => c.User)
+                .OrderByDescending(c => c.CreateDate)
+                .Select(c => new
+                {
+                    c.Id,
+                    c.Text,
+                    c.CreateDate,
+
+                    User = new
+                    {
+                        c.User.Id,
+                        c.User.UserName,
+                        c.User.Email
+                    }
+                })
+                .ToListAsync();
+
+            return Ok(comments);
         }
 
         [HttpPost("")]
