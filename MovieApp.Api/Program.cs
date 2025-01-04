@@ -9,16 +9,13 @@ using MovieApp.Infrastructure.Context;
 using MovieApp.Infrastructure.MovieDb;
 using System.Text;
 using System.Text.Json.Serialization;
+using MovieApp.Api.Services.RabbitMQ;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-// Ýç içe olan classlarý json serialize ederken infinite loop'tan çýkmak için eklenen kod
 builder.Services.AddControllers()
     .AddJsonOptions(e => e.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -77,6 +74,8 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 
 builder.Services.AddScoped<IMovieDbApi, MovieDbApi>();
 
+builder.Services.AddSingleton<IRabbitMQService, RabbitMQService>();
+builder.Services.AddHostedService<CommentConsumerService>();
 var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
 
 builder.Services.AddAuthentication(options =>
@@ -102,7 +101,6 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -120,5 +118,3 @@ app.MapControllers();
 
 app.Run();
 
-
-// n-layered en popüler

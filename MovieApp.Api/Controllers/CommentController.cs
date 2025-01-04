@@ -4,6 +4,7 @@ using MovieApp.Api.Model.Comment;
 using MovieApp.Domain.Entity;
 using MovieApp.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using MovieApp.Api.Services.RabbitMQ;
 
 namespace MovieApp.Api.Controllers
 {
@@ -12,9 +13,13 @@ namespace MovieApp.Api.Controllers
     public class CommentController : BaseController
     {
         private readonly MovieDbContext _context;
-        public CommentController(MovieDbContext context)
+        private readonly IRabbitMQService _rabbitMQService;
+        private const string QUEUE_NAME = "comments_queue";
+
+        public CommentController(MovieDbContext context, IRabbitMQService rabbitMQService)
         {
             _context = context;
+            _rabbitMQService = rabbitMQService;
         }
 
         [HttpGet("movie/{movieId:int}")]
@@ -43,23 +48,26 @@ namespace MovieApp.Api.Controllers
         }
 
         [HttpPost("")]
-        public async Task<IActionResult> SendComment([FromBody] SendCommentRequestModel req)
+        public IActionResult SendComment([FromBody] SendCommentRequestModel req)
         {
-            // kullanıcıdan gelen mesajı rabbit mq queue'ya gönder ve ok response dön
-
-
-            // başka bir consumer class'ında bu mesajı db'ye yaz
-
-            await _context.Comments.AddAsync(new Comment
+            try
             {
-                Text = req.Comment,
-                UserId = GetUserId(),
-                MovieId = req.Id
-            });
+                var comment = new Comment
+                {
+                    Text = req.Comment,
+                    UserId = GetUserId(),
+                    MovieId = req.Id,
+                    CreateDate = DateTime.UtcNow
+                };
 
-            await _context.SaveChangesAsync();
-
-            return Ok();
+                _rabbitMQService.SendMessage(comment, QUEUE_NAME);
+                
+                return Ok(new { message = "Yorum kuyruğa eklendi" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Hata: {ex.Message}" });
+            }
         }
 
         [HttpDelete("{id:int}")]
@@ -96,6 +104,35 @@ namespace MovieApp.Api.Controllers
             await _context.SaveChangesAsync();
 
             return Ok();
+        }
+
+        [HttpGet("test-rabbitmq")]
+        public IActionResult TestRabbitMQ()
+        {
+            try
+            {
+                var testComment = new Comment
+                {
+                    Text = "Test mesajı - " + DateTime.Now.ToString(),
+                    UserId = "test-user",
+                    MovieId = 1,
+                    CreateDate = DateTime.UtcNow
+                };
+
+                Console.WriteLine("Test mesajı gönderiliyor...");
+                _rabbitMQService.SendMessage(testComment, QUEUE_NAME);
+                Console.WriteLine("Test mesajı gönderildi!");
+
+                return Ok(new { 
+                    message = "Test mesajı kuyruğa eklendi",
+                    comment = testComment 
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Test hatası: {ex.Message}");
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
     }
 
