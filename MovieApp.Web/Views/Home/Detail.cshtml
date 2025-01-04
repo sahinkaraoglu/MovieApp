@@ -43,39 +43,42 @@
     </div>
 
     <div class="row">
-        @foreach (var item in Model.comments)
-        {
-            <div class="col-12 mt-3">
-                <div class="comment-content w-100">
-                    <h1 style="font-size: 20px">@item.User.UserName</h1>
-                    <h3 style="font-size: 20px" class="comment-text">@item.Text</h3>
-                    <textarea class="form-control edit-comment-text" style="display: none; min-height: 100px; width: 100%; margin: 10px 0; font-size: 16px; padding: 10px;">@item.Text</textarea>
-                </div>
-                @if (Context.Session.GetString("jwt") != null && item.User.UserName == Context.Session.GetString("name"))
-                {
-                    <div class="comment-actions mt-2">
-                        <button class="btn btn-primary edit-comment" data-comment-id="@item.Id">
-                            <i class="fas fa-edit"></i> Düzenle
-                        </button>
-                        <button class="btn btn-success save-comment" data-comment-id="@item.Id" style="display: none;">
-                            <i class="fas fa-save"></i> Kaydet
-                        </button>
-                        <button class="btn btn-secondary cancel-edit" style="display: none;">
-                            <i class="fas fa-times"></i> İptal
-                        </button>
-                        <button class="btn btn-danger delete-comment" data-comment-id="@item.Id">
-                            <i class="fas fa-trash"></i> Sil
-                        </button>
+        <div class="col-md-6">
+            @foreach (var item in Model.comments)
+            {
+                <div class="mt-3">
+                    <div class="comment-content w-100">
+                        <h1 style="font-size: 16px">@item.User.UserName</h1>
+                        <h3 style="font-size: 14px" class="comment-text">@item.Text</h3>
+                        <textarea class="form-control edit-comment-text" style="display: none; min-height: 80px; width: 100%; margin: 8px 0; font-size: 14px; padding: 8px;">@item.Text</textarea>
                     </div>
-                }
-            </div>
-        }
+                    @if (Context.Session.GetString("jwt") != null && item.User.UserName == Context.Session.GetString("name"))
+                    {
+                        <div class="comment-actions mt-2">
+                            <button class="btn btn-sm btn-primary edit-comment" data-comment-id="@item.Id">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <button class="btn btn-sm btn-success save-comment" data-comment-id="@item.Id" style="display: none;">
+                                <i class="fas fa-save"></i> Kaydet
+                            </button>
+                            <button class="btn btn-sm btn-secondary cancel-edit" style="display: none;">
+                                <i class="fas fa-times"></i> İptal
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-comment" data-comment-id="@item.Id">
+                                <i class="fas fa-trash"></i> Sil
+                            </button>
+                        </div>
+                    }
+                    <br>
+                </div>
+            }
+        </div>
     </div>
 
     @if (Context.Session.GetString("jwt") != null)
     {
-        <div class="row">
-            <div class="col-12">
+        <div class="row mt-5">
+            <div class="col-md-6">
                 <form id="comment-form">
                     <div class="mb-3">
                         <label for="commentArea" class="form-label">Yorumunuz</label>
@@ -89,7 +92,7 @@
     else
     {
         <div class="row mt-3">
-            <div class="col-12">
+            <div class="col-md-6">
                 <div class="alert alert-info">
                     Yorum yapabilmek için lütfen <a href="/Auth/Login">giriş yapın</a>.
                 </div>
@@ -102,15 +105,16 @@
 <style>
     .comment-content {
         background-color: #f8f9fa;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 10px;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 8px;
     }
 
     .comment-text {
-        margin: 10px 0;
+        margin: 8px 0;
         white-space: pre-wrap;
         word-wrap: break-word;
+        line-height: 1.4;
     }
 
     .edit-comment-text {
@@ -121,12 +125,32 @@
 
     .comment-actions {
         display: flex;
-        gap: 10px;
+        gap: 5px;
         flex-wrap: wrap;
     }
 
-    .comment-actions button {
-        min-width: 100px;
+    .comment-actions button.btn-primary:hover {
+        background-color: #0b5ed7;
+        border-color: #0a58ca;
+        color: white;
+    }
+
+    .comment-actions button.btn-danger:hover {
+        background-color: #bb2d3b;
+        border-color: #b02a37;
+        color: white;
+    }
+
+    .comment-actions button.btn-success:hover {
+        background-color: #157347;
+        border-color: #146c43;
+        color: white;
+    }
+
+    .comment-actions button.btn-secondary:hover {
+        background-color: #5c636a;
+        border-color: #565e64;
+        color: white;
     }
 </style>
 
@@ -157,12 +181,11 @@
         });
     </script>
     <script>
-        $(document).ready(function() {
-            // Delete comment functionality
-            $('.delete-comment').click(function() {
+        $(document).ready(function () {
+            $('.delete-comment').click(function () {
                 const commentId = $(this).data('comment-id');
                 const button = $(this);
-                
+
                 if (confirm('Bu yorumu silmek istediğinize emin misiniz?')) {
                     $.ajax({
                         url: `/movie/@Model.data.id/comment/${commentId}`,
@@ -170,17 +193,17 @@
                         headers: {
                             'Authorization': 'Bearer @Context.Session.GetString("jwt")'
                         },
-                        success: function() {
-                            button.closest('.col-12').fadeOut(400, function() {
+                        success: function () {
+                            button.closest('.col-12').fadeOut(400, function () {
                                 $(this).remove();
                             });
                         },
-                        error: function(xhr) {
+                        error: function (xhr) {
                             if (xhr.status === 401) {
                                 alert('Bu yorumu silme yetkiniz yok.');
                             } else if (xhr.status === 404) {
                                 alert('Yorum bulunamadı. Silinmiş olabilir.');
-                                button.closest('.col-12').fadeOut(400, function() {
+                                button.closest('.col-12').fadeOut(400, function () {
                                     $(this).remove();
                                 });
                             } else {
@@ -191,13 +214,11 @@
                 }
             });
 
-            // Edit comment functionality
-            $('.edit-comment').click(function() {
+            $('.edit-comment').click(function () {
                 const commentContainer = $(this).closest('.col-12');
                 const commentText = commentContainer.find('.comment-text');
                 const editTextarea = commentContainer.find('.edit-comment-text');
-                
-                // Show edit interface
+
                 commentText.hide();
                 editTextarea.show();
                 $(this).hide();
@@ -205,24 +226,20 @@
                 commentContainer.find('.save-comment, .cancel-edit').show();
             });
 
-            // Cancel edit
-            $('.cancel-edit').click(function() {
+            $('.cancel-edit').click(function () {
                 const commentContainer = $(this).closest('.col-12');
                 const commentText = commentContainer.find('.comment-text');
                 const editTextarea = commentContainer.find('.edit-comment-text');
-                
-                // Restore original text and hide edit interface
+
                 editTextarea.hide();
                 commentText.show();
                 commentContainer.find('.edit-comment, .delete-comment').show();
                 commentContainer.find('.save-comment, .cancel-edit').hide();
-                
-                // Reset textarea content
+
                 editTextarea.val(commentText.text());
             });
 
-            // Save edited comment
-            $('.save-comment').click(function() {
+            $('.save-comment').click(function () {
                 const commentId = $(this).data('comment-id');
                 const commentContainer = $(this).closest('.col-12');
                 const commentText = commentContainer.find('.comment-text');
@@ -237,11 +254,8 @@
                     headers: {
                         'Authorization': 'Bearer @Context.Session.GetString("jwt")'
                     },
-                    success: function() {
-                        // Update displayed text
+                    success: function () {
                         commentText.text(newText);
-                        
-                        // Hide edit interface
                         editTextarea.hide();
                         commentText.show();
                         commentContainer.find('.edit-comment, .delete-comment').show();
