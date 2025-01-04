@@ -8,6 +8,7 @@ using MovieApp.Infrastructure.MovieDb;
 using sib_api_v3_sdk.Api;
 using sib_api_v3_sdk.Client;
 using sib_api_v3_sdk.Model;
+using static MovieApp.Api.Entities.Auth;
 
 namespace MovieApp.Api.Controllers
 {
@@ -29,7 +30,7 @@ namespace MovieApp.Api.Controllers
             _jwtService = jwtService;
             _movieDbApi = movieDbApi;
         }
-        
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestModel req)
         {
@@ -40,7 +41,8 @@ namespace MovieApp.Api.Controllers
             if (result.Succeeded)
             {
                 return Created();
-            } else
+            }
+            else
             {
                 return BadRequest();
             }
@@ -71,7 +73,7 @@ namespace MovieApp.Api.Controllers
         public async Task<IActionResult> ForgetPassword([FromBody] ForgetPasswordRequestModel req)
         {
             var user = await _userManager.FindByEmailAsync(req.Email);
-            
+
             var resToken = await _userManager.GeneratePasswordResetTokenAsync(user);
 
             // Send token to email            
@@ -123,10 +125,11 @@ namespace MovieApp.Api.Controllers
 
             var result = await _userManager.ResetPasswordAsync(user, req.Token, req.Password);
 
-            if (result.Succeeded) { 
+            if (result.Succeeded)
+            {
                 return Ok();
             }
-            
+
             return BadRequest();
         }
 
@@ -140,29 +143,5 @@ namespace MovieApp.Api.Controllers
                 userId = userId
             });
         }
-    }
-
-    public class RegisterRequestModel
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
-
-    public class LoginRequestModel
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
-
-    public class ForgetPasswordRequestModel
-    {
-        public string Email { get; set; }
-    }
-
-    public class ResetPasswordRequestModel
-    {
-        public string Email { get; set; }
-        public string Token { get; set; }
-        public string Password { get; set; }
     }
 }
