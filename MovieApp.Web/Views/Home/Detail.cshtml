@@ -14,29 +14,21 @@
 
                     <p class="card-text">Bölüm Sayısı: @Model.data.number_of_episodes</p>
                     <p class="card-text">Sezon Sayısı: @Model.data.number_of_seasons</p>
-                    <p class="card-text">
-                        Orjinal Dil:  @string.Join(", ", @Model.data.spoken_languages.Select(g => g.name))
-                    </p>
+                    <p class="card-text">Orjinal Dil: @string.Join(", ", @Model.data.spoken_languages.Select(g => g.name))</p>
                     <p class="card-text">Genel Bakış: @Model.data.overview</p>
-                    <p class="card-text">Tarz: @Model.data.type</p>
-
-                    <p class="card-text">
-                        Tür: @string.Join(", ", Model.data.genres.Select(g => g.name))
-                    </p>
-                    <p class="card-text">
-                        Platform: @string.Join(", ", @Model.data.networks.Select(g => g.name))
-                    </p>
-                    <p class="card-text">
-                        Ülke: @string.Join(", ", @Model.data.origin_country)
-                    </p>
+                    <p class="card-text">Tür: @string.Join(", ", Model.data.genres.Select(g => g.name))</p>
+                    <p class="card-text">Platform: @string.Join(", ", @Model.data.networks.Select(g => g.name))</p>
+                    <p class="card-text">Ülke: @string.Join(", ", @Model.data.origin_country)</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Poster </h5>
-                    <p class="card-text"><img src="@(string.Concat("https://image.tmdb.org/t/p/original", Model.data.poster_path))" class="img-fluid" alt="@Model.data.original_name" style="max-width: 300px; height: auto;" /></p>
+                    <h5 class="card-title">Poster</h5>
+                    <img src="@(string.Concat("https://image.tmdb.org/t/p/original", Model.data.poster_path))" 
+                         class="img-fluid" alt="@Model.data.original_name" 
+                         style="max-width: 300px; height: auto;" />
                 </div>
             </div>
         </div>
