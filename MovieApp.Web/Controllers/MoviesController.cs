@@ -2,42 +2,36 @@ using Microsoft.AspNetCore.Mvc;
 using MovieApp.Infrastructure.Models.MovieDb.PopularTvSeries;
 using MovieApp.Infrastructure.Models.MovieDb.TvSeriesDetail;
 using System.Text.Json;
+using MovieApp.Infrastructure.MovieDb;
 
 namespace MovieApp.Web.Controllers
 {
     public class MoviesController : Controller
     {
         private readonly ILogger<MoviesController> _logger;
+        private readonly IMovieDbApi _movieDbApi;
 
-        public MoviesController(ILogger<MoviesController> logger)
+        public MoviesController(ILogger<MoviesController> logger, IMovieDbApi movieDbApi)
         {
             _logger = logger;
+            _movieDbApi = movieDbApi;
         }
 
         public async Task<IActionResult> Index()
         {
-            HttpClient client = new HttpClient();
-            var response = await client.GetAsync("https://localhost:7063/api/movie");
-            var content = await response.Content.ReadAsStringAsync();
-            client.Dispose();
-            var movieResponse = JsonSerializer.Deserialize<PopularTvSeriesModel>(content);
-
-            return View(movieResponse);
+            var movies = await _movieDbApi.GetPopularMoviesAsync();
+            return View(movies);
         }
 
         [HttpGet("movies/{id:int}")]
         public async Task<IActionResult> Detail(int id)
         {
-            HttpClient client = new HttpClient();
-            var response = await client.GetAsync($"https://localhost:7063/api/movie/{id}");
-            var content = await response.Content.ReadAsStringAsync();
-            client.Dispose();
-            var movieResponse = JsonSerializer.Deserialize<MovieDetailResponseModel>(content, new JsonSerializerOptions
+            var movie = await _movieDbApi.GetMovieDetailByIdAsync(id);
+            var response = new MovieDetailResponseModel
             {
-                PropertyNameCaseInsensitive = true
-            });
-
-            return View(movieResponse);
+                data = movie
+            };
+            return View(response);
         }
 
         [HttpPost("movies/{id:int}/comment")]

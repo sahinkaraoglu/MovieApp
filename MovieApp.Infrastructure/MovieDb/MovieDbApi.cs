@@ -31,6 +31,16 @@ namespace MovieApp.Infrastructure.MovieDb
             return movieResponse;
         }
 
+        public async Task<PopularTvSeriesModel> GetPopularMoviesAsync()
+        {
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync("https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US&page=1&sort_by=vote_average.desc&vote_count.gte=200&api_key=c53f45afaec37433217a385a706e45f1");
+            var content = await response.Content.ReadAsStringAsync();
+            client.Dispose();
+            var movieResponse = JsonSerializer.Deserialize<PopularTvSeriesModel>(content);
+            return movieResponse;
+        }
+
         public async Task<TvSeriesDetailModel> GetMovieByIdAsync(int id)
         {
             HttpClient client = new HttpClient();
@@ -48,6 +58,16 @@ namespace MovieApp.Infrastructure.MovieDb
             client.Dispose();
             var movieResponse = JsonSerializer.Deserialize<TvSeriesDetailModel>(content);
 
+            return movieResponse;
+        }
+
+        public async Task<TvSeriesDetailModel> GetMovieDetailByIdAsync(int id)
+        {
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync($"https://api.themoviedb.org/3/movie/{id}?api_key=c53f45afaec37433217a385a706e45f1");
+            var content = await response.Content.ReadAsStringAsync();
+            client.Dispose();
+            var movieResponse = JsonSerializer.Deserialize<TvSeriesDetailModel>(content);
             return movieResponse;
         }
     }
