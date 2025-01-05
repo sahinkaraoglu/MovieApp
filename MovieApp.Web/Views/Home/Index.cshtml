@@ -1,7 +1,4 @@
-﻿@using MovieApp.Infrastructure.Models.MovieDb.PopularTvSeries
-@model PopularTvSeriesModel;
-
-@{
+﻿@{
     ViewData["Title"] = "Ana Sayfa";
 }
 
@@ -9,27 +6,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
 </head>
 
-<div class="container my-4">
-    <h1 class="text-center" style="font-family: 'Abril Fatface', cursive;">Movie App</h1>
-
-    <div class="row">
-        @foreach (var item in Model.results)
-        {
-            <div class="col-4 mb-4">
-                <div class="card h-100">
-                    <img src="@(string.Concat("https://image.tmdb.org/t/p/original", item.backdrop_path))" class="card-img-top" alt="...">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">@item.name</h5>
-                        <p class="card-text">
-                            @(item.overview != null && item.overview.Length > 200
-                                ? item.overview.Substring(0, 200) + "..."
-                                : item.overview)
-                        </p>
-                        <a href="/movie/@item.id" class="btn btn-primary w-100 mt-auto">Detay</a>
-                    </div>
-                </div>
-            </div>
-        }
+<div class="container-fluid my-4">
+    <h1 class="text-center" style="font-family: 'Abril Fatface', cursive;">Movie App'e Hoş Geldiniz</h1>
+    <p class="text-center">Film ve dizileri keşfetmek için üst menüyü kullanabilirsiniz.</p>
+    
+    <div class="text-center mt-4">
+        <img src="~/img/HomePhoto.jpg" alt="Movie App Home" class="img-fluid rounded shadow" style="max-width: 1000px; width: 100%; height: auto; max-height: 600px; object-fit: cover;" />
     </div>
 </div>
 

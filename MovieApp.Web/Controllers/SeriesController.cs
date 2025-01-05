@@ -1,27 +1,31 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.Infrastructure.Models.MovieDb.PopularTvSeries;
 using MovieApp.Infrastructure.Models.MovieDb.TvSeriesDetail;
-using MovieApp.Web.Models;
-using System.Diagnostics;
 using System.Text.Json;
 
 namespace MovieApp.Web.Controllers
 {
-    public class HomeController : Controller
+    public class SeriesController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<SeriesController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public SeriesController(ILogger<SeriesController> logger)
         {
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:7063/api/movie");
+            var content = await response.Content.ReadAsStringAsync();
+            client.Dispose();
+            var movieResponse = JsonSerializer.Deserialize<PopularTvSeriesModel>(content);
+
+            return View(movieResponse);
         }
 
-        [HttpGet("movie/{id:int}")]
+        [HttpGet("series/{id:int}")]
         public async Task<IActionResult> Detail(int id)
         {
             HttpClient client = new HttpClient();
@@ -36,7 +40,7 @@ namespace MovieApp.Web.Controllers
             return View(movieResponse);
         }
 
-        [HttpPost("movie/{id:int}/comment")]
+        [HttpPost("series/{id:int}/comment")]
         public async Task<IActionResult> SendComment([FromRoute] int id, [FromBody] SendCommentRequest req)
         {
             var userJwt = HttpContext.Session.GetString("jwt");
@@ -58,8 +62,8 @@ namespace MovieApp.Web.Controllers
             return Ok();
         }
 
-        [HttpDelete("movie/{movieId:int}/comment/{commentId:int}")]
-        public async Task<IActionResult> DeleteComment([FromRoute] int movieId, [FromRoute] int commentId)
+        [HttpDelete("series/{seriesId:int}/comment/{commentId:int}")]
+        public async Task<IActionResult> DeleteComment([FromRoute] int seriesId, [FromRoute] int commentId)
         {
             var userJwt = HttpContext.Session.GetString("jwt");
 
@@ -78,8 +82,8 @@ namespace MovieApp.Web.Controllers
             return Ok();
         }
 
-        [HttpPut("movie/{movieId:int}/comment/{commentId:int}")]
-        public async Task<IActionResult> UpdateComment([FromRoute] int movieId, [FromRoute] int commentId, [FromBody] UpdateCommentRequest req)
+        [HttpPut("series/{seriesId:int}/comment/{commentId:int}")]
+        public async Task<IActionResult> UpdateComment([FromRoute] int seriesId, [FromRoute] int commentId, [FromBody] UpdateCommentRequest req)
         {
             var userJwt = HttpContext.Session.GetString("jwt");
 
@@ -101,17 +105,6 @@ namespace MovieApp.Web.Controllers
             return Ok();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
         public class SendCommentRequest
         {
             public string Comment { get; set; }
@@ -122,4 +115,4 @@ namespace MovieApp.Web.Controllers
             public string Comment { get; set; }
         }
     }
-}
+} 
