@@ -1,3 +1,5 @@
-![movieapp](https://github.com/user-attachments/assets/c4de9d6b-6b08-494e-b15d-6720c50ff358)
+![HomePage](https://github.com/user-attachments/assets/a81beef8-19d1-4785-a061-7579d70c71b8)
 
-![login](https://github.com/user-attachments/assets/1ffff825-b118-4e2b-88f8-92642030efb3)
+![Diziler](https://github.com/user-attachments/assets/e70d6041-877e-4196-beb2-27147d11ef58)
+
+![Login](https://github.com/user-attachments/assets/503d88f5-da6b-452e-a171-6ba83fbbe472)
