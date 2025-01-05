@@ -12,33 +12,36 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">MovieApp.Web</a>
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">MovieApp</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Anasayfa</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Anasayfa</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Series" asp-action="Index">Diziler</a>
+                            <a class="nav-link" asp-controller="Series" asp-action="Index">Diziler</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Movies" asp-action="Index">Filmler</a>
+                            <a class="nav-link" asp-controller="Movies" asp-action="Index">Filmler</a>
                         </li>
                         @if (string.IsNullOrEmpty(Context.Session.GetString("name")))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Auth" asp-action="Login">Giriş</a>
+                                <a class="nav-link" asp-controller="Auth" asp-action="Login">Giriş</a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Auth" asp-action="Logout">Çıkış Yap</a>
+                                <a class="nav-link" asp-controller="Auth" asp-action="Logout">Çıkış Yap</a>
                             </li>
                             <li class="nav-item">
-                                <div class="text-dark mt-2">@(Context.Session.GetString("name"))</div>
+                                <div>@(Context.Session.GetString("name"))</div>
                             </li>
                         }
                     </ul>
