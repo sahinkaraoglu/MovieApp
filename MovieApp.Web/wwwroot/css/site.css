@@ -33,12 +33,10 @@ body {
     color: #2c3e50 !important;
     font-size: 1.4rem;
     letter-spacing: 0.3px;
-    transition: all 0.3s ease;
 }
 
 .navbar-brand:hover {
     color: #3498db !important;
-    transform: scale(1.01);
 }
 
 .nav-link {
@@ -47,30 +45,12 @@ body {
     padding: 8px 16px !important;
     margin: 0 5px;
     border-radius: 20px;
-    transition: all 0.4s ease;
     font-size: 0.95rem;
 }
 
 .nav-link:hover {
     color: #3498db !important;
     background-color: rgba(52, 152, 219, 0.05);
-    transform: translateY(-1px);
-}
-
-.nav-link::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 4px;
-    left: 50%;
-    background-color: #3498db;
-    transition: all 0.3s ease;
-}
-
-.nav-link:hover::after {
-    width: 60%;
-    left: 20%;
 }
 
 .navbar-nav .nav-item div {
@@ -119,13 +99,4 @@ body {
 
 .navbar-toggler-icon {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2852, 152, 219, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.navbar {
-    animation: fadeIn 0.5s ease-out;
 }
