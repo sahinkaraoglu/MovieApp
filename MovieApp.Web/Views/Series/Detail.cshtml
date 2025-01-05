@@ -102,7 +102,7 @@
                 }
 
                 $.ajax({
-                    url: '/movie/@Model.data.id/comment',
+                    url: '/series/@Model.data.id/comment',
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(commentData),
@@ -113,19 +113,15 @@
                         console.log("error");
                     }
                 });
-
             });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
+
             $('.delete-comment').click(function() {
                 const commentId = $(this).data('comment-id');
                 const button = $(this);
                 
                 if (confirm('Bu yorumu silmek istediğinize emin misiniz?')) {
                     $.ajax({
-                        url: `/movie/@Model.data.id/comment/${commentId}`,
+                        url: `/series/@Model.data.id/comment/${commentId}`,
                         type: 'DELETE',
                         headers: {
                             'Authorization': 'Bearer @Context.Session.GetString("jwt")'
@@ -184,7 +180,7 @@
                 const newText = editTextarea.val();
 
                 $.ajax({
-                    url: `/movie/@Model.data.id/comment/${commentId}`,
+                    url: `/series/@Model.data.id/comment/${commentId}`,
                     type: 'PUT',
                     contentType: 'application/json',
                     data: JSON.stringify({ comment: newText }),
