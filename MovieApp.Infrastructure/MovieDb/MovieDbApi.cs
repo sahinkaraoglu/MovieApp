@@ -1,12 +1,7 @@
-﻿using MovieApp.Infrastructure.Context;
+﻿using MovieApp.Infrastructure.Models.MovieDb.Movies;
 using MovieApp.Infrastructure.Models.MovieDb.PopularTvSeries;
 using MovieApp.Infrastructure.Models.MovieDb.TvSeriesDetail;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace MovieApp.Infrastructure.MovieDb
 {
@@ -16,61 +11,40 @@ namespace MovieApp.Infrastructure.MovieDb
         {
             HttpClient client = new HttpClient();
             var response = await client.GetAsync("https://api.themoviedb.org/3/discover/tv?include_adult=false&language=en-US&page=1&sort_by=vote_average.desc&vote_count.gte=200&api_key=c53f45afaec37433217a385a706e45f1");
-            //var response = await client.GetAsync("https://api.themoviedb.org/3/discover/tv?include_adult=false&language=tr-TR&page=1&sort_by=popularity.desc&api_key=c53f45afaec37433217a385a706e45f1");
             var content = await response.Content.ReadAsStringAsync();
-
-            // JsonSerializer - .net'in kendi paketi
-            // Newtonsoft.Json - harici bir nuget paketi
-            // Reflection nedir? --
-
-            // serialize -> objeden texte
-            // deserialize -> textten objeye
-
             client.Dispose();
             var movieResponse = JsonSerializer.Deserialize<PopularTvSeriesModel>(content);
             return movieResponse;
         }
 
-        public async Task<PopularTvSeriesModel> GetPopularMoviesAsync()
+        public async Task<PopularMoviesModel> GetPopularMoviesAsync()
         {
             HttpClient client = new HttpClient();
             var response = await client.GetAsync("https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US&page=1&sort_by=vote_average.desc&vote_count.gte=200&api_key=c53f45afaec37433217a385a706e45f1");
             var content = await response.Content.ReadAsStringAsync();
             client.Dispose();
-            var movieResponse = JsonSerializer.Deserialize<PopularTvSeriesModel>(content);
+            var movieResponse = JsonSerializer.Deserialize<PopularMoviesModel>(content);
             return movieResponse;
         }
 
         public async Task<TvSeriesDetailModel> GetMovieByIdAsync(int id)
         {
             HttpClient client = new HttpClient();
-        
             var response = await client.GetAsync($"https://api.themoviedb.org/3/tv/{id}?api_key=c53f45afaec37433217a385a706e45f1");
             var content = await response.Content.ReadAsStringAsync();
-
-            // JsonSerializer - .net'in kendi paketi
-            // Newtonsoft.Json - harici bir nuget paketi
-            // Reflection nedir? --
-
-            // serialize -> objeden texte
-            // deserialize -> textten objeye
-
             client.Dispose();
             var movieResponse = JsonSerializer.Deserialize<TvSeriesDetailModel>(content);
-
             return movieResponse;
         }
 
-        public async Task<TvSeriesDetailModel> GetMovieDetailByIdAsync(int id)
+        public async Task<MovieDetailModel> GetMovieDetailByIdAsync(int id)
         {
             HttpClient client = new HttpClient();
             var response = await client.GetAsync($"https://api.themoviedb.org/3/movie/{id}?api_key=c53f45afaec37433217a385a706e45f1");
             var content = await response.Content.ReadAsStringAsync();
             client.Dispose();
-            var movieResponse = JsonSerializer.Deserialize<TvSeriesDetailModel>(content);
+            var movieResponse = JsonSerializer.Deserialize<MovieDetailModel>(content);
             return movieResponse;
         }
     }
-
-    
 }

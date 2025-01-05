@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using MovieApp.Infrastructure.Models.MovieDb.PopularTvSeries;
+using MovieApp.Infrastructure.Models.MovieDb.Movies;
 using MovieApp.Infrastructure.Models.MovieDb.TvSeriesDetail;
 using System.Text.Json;
 using MovieApp.Infrastructure.MovieDb;
+using MovieDetailResponseModel = MovieApp.Infrastructure.Models.MovieDb.Movies.MovieDetailResponseModel;
 
 namespace MovieApp.Web.Controllers
 {
@@ -27,10 +28,23 @@ namespace MovieApp.Web.Controllers
         public async Task<IActionResult> Detail(int id)
         {
             var movie = await _movieDbApi.GetMovieDetailByIdAsync(id);
+
+            HttpClient client = new HttpClient();
+            var commentsResponse = await client.GetAsync($"https://localhost:7063/api/comment/movie/{id}");
+            var commentsContent = await commentsResponse.Content.ReadAsStringAsync();
+            client.Dispose();
+
+            var comments = JsonSerializer.Deserialize<List<CommentModel>>(commentsContent, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            }) ?? new List<CommentModel>();
+
             var response = new MovieDetailResponseModel
             {
-                data = movie
+                data = movie,
+                comments = comments
             };
+
             return View(response);
         }
 
