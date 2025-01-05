@@ -1,0 +1,213 @@
+@using MovieApp.Infrastructure.Models.MovieDb.TvSeriesDetail
+@using Microsoft.AspNetCore.Http
+@model MovieDetailResponseModel;
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Orjinal Adı: @Model.data.original_name </h5>
+                    <h5 class="card-title">@Model.data.original_name </h5>
+                    <div class="w-100 mt-3"></div>
+                    <p class="card-text"><img src="@(string.Concat("https://image.tmdb.org/t/p/original", Model.data.backdrop_path))" class="img-fluid" alt="@Model.data.original_name" style="max-width: 300px; height: auto;" /></p>
+
+                    <p class="card-text">Bölüm Sayısı: @Model.data.number_of_episodes</p>
+                    <p class="card-text">Sezon Sayısı: @Model.data.number_of_seasons</p>
+                    <p class="card-text">Orjinal Dil: @string.Join(", ", @Model.data.spoken_languages.Select(g => g.name))</p>
+                    <p class="card-text">Genel Bakış: @Model.data.overview</p>
+                    <p class="card-text">Tür: @string.Join(", ", Model.data.genres.Select(g => g.name))</p>
+                    <p class="card-text">Platform: @string.Join(", ", @Model.data.networks.Select(g => g.name))</p>
+                    <p class="card-text">Ülke: @string.Join(", ", @Model.data.origin_country)</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Poster</h5>
+                    <img src="@(string.Concat("https://image.tmdb.org/t/p/original", Model.data.poster_path))" 
+                         class="img-fluid" alt="@Model.data.original_name" 
+                         style="max-width: 300px; height: auto;" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var item in Model.comments)
+        {
+            <div class="col-12 mt-3">
+                <div class="comment-content w-100">
+                    <h1 style="font-size: 20px">@item.User.UserName</h1>
+                    <h3 style="font-size: 20px" class="comment-text">@item.Text</h3>
+                    <textarea class="form-control edit-comment-text" style="display: none; min-height: 100px; width: 100%; margin: 10px 0; font-size: 16px; padding: 10px;">@item.Text</textarea>
+                </div>
+                @if (Context.Session.GetString("jwt") != null && item.User.UserName == Context.Session.GetString("name"))
+                {
+                    <div class="comment-actions mt-2">
+                        <button class="btn btn-primary edit-comment" data-comment-id="@item.Id">
+                            <i class="fas fa-edit"></i> Düzenle
+                        </button>
+                        <button class="btn btn-success save-comment" data-comment-id="@item.Id" style="display: none;">
+                            <i class="fas fa-save"></i> Kaydet
+                        </button>
+                        <button class="btn btn-secondary cancel-edit" style="display: none;">
+                            <i class="fas fa-times"></i> İptal
+                        </button>
+                        <button class="btn btn-danger delete-comment" data-comment-id="@item.Id">
+                            <i class="fas fa-trash"></i> Sil
+                        </button>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    @if (Context.Session.GetString("jwt") != null)
+    {
+        <div class="row">
+            <div class="col-12">
+                <form id="comment-form">
+                    <div class="mb-3">
+                        <label for="commentArea" class="form-label">Yorumunuz</label>
+                        <textarea class="form-control" id="commentArea" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Yorum Yap</button>
+                </form>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="alert alert-info">
+                    Yorum yapabilmek için lütfen <a href="/Auth/Login">giriş yapın</a>.
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#comment-form").on('submit', function (e) {
+                e.preventDefault();
+
+                var commentData = {
+                    comment: $("#commentArea").val(),
+                }
+
+                $.ajax({
+                    url: '/movies/@Model.data.id/comment',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(commentData),
+                    success: function (response) {
+                        window.location.reload()
+                    },
+                    error: function (xhr) {
+                        console.log("error");
+                    }
+                });
+            });
+
+            $('.delete-comment').click(function() {
+                const commentId = $(this).data('comment-id');
+                const button = $(this);
+                
+                if (confirm('Bu yorumu silmek istediğinize emin misiniz?')) {
+                    $.ajax({
+                        url: `/movies/@Model.data.id/comment/${commentId}`,
+                        type: 'DELETE',
+                        headers: {
+                            'Authorization': 'Bearer @Context.Session.GetString("jwt")'
+                        },
+                        success: function() {
+                            button.closest('.col-12').fadeOut(400, function() {
+                                $(this).remove();
+                            });
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 401) {
+                                alert('Bu yorumu silme yetkiniz yok.');
+                            } else if (xhr.status === 404) {
+                                alert('Yorum bulunamadı. Silinmiş olabilir.');
+                                button.closest('.col-12').fadeOut(400, function() {
+                                    $(this).remove();
+                                });
+                            } else {
+                                alert('Yorum silinemedi. Lütfen tekrar deneyin.');
+                            }
+                        }
+                    });
+                }
+            });
+
+            $('.edit-comment').click(function() {
+                const commentContainer = $(this).closest('.col-12');
+                const commentText = commentContainer.find('.comment-text');
+                const editTextarea = commentContainer.find('.edit-comment-text');
+                
+                commentText.hide();
+                editTextarea.show();
+                $(this).hide();
+                commentContainer.find('.delete-comment').hide();
+                commentContainer.find('.save-comment, .cancel-edit').show();
+            });
+
+            $('.cancel-edit').click(function() {
+                const commentContainer = $(this).closest('.col-12');
+                const commentText = commentContainer.find('.comment-text');
+                const editTextarea = commentContainer.find('.edit-comment-text');
+                
+                editTextarea.hide();
+                commentText.show();
+                commentContainer.find('.edit-comment, .delete-comment').show();
+                commentContainer.find('.save-comment, .cancel-edit').hide();
+                
+                editTextarea.val(commentText.text());
+            });
+
+            $('.save-comment').click(function() {
+                const commentId = $(this).data('comment-id');
+                const commentContainer = $(this).closest('.col-12');
+                const commentText = commentContainer.find('.comment-text');
+                const editTextarea = commentContainer.find('.edit-comment-text');
+                const newText = editTextarea.val();
+
+                $.ajax({
+                    url: `/movies/@Model.data.id/comment/${commentId}`,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ comment: newText }),
+                    headers: {
+                        'Authorization': 'Bearer @Context.Session.GetString("jwt")'
+                    },
+                    success: function() {
+                        commentText.text(newText);
+                        
+                        editTextarea.hide();
+                        commentText.show();
+                        commentContainer.find('.edit-comment, .delete-comment').show();
+                        commentContainer.find('.save-comment, .cancel-edit').hide();
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 401) {
+                            alert('Bu yorumu düzenleme yetkiniz yok.');
+                        } else if (xhr.status === 404) {
+                            alert('Yorum bulunamadı. Silinmiş olabilir.');
+                            commentContainer.fadeOut(400, function() {
+                                $(this).remove();
+                            });
+                        } else {
+                            alert('Yorum düzenlenemedi. Lütfen tekrar deneyin.');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+} 

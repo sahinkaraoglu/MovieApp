@@ -10,4 +10,8 @@
     <ProjectReference Include="..\MovieApp.Infrastructure\MovieApp.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Movies\" />
+  </ItemGroup>
+
 </Project>
