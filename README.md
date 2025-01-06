@@ -1,5 +1,5 @@
 
-![MovieApp](https://github.com/user-attachments/assets/a51cbf81-f536-4484-8812-e22769a1123c)
+![HomePageFirst](https://github.com/user-attachments/assets/b50a42b0-a37f-432f-b936-c5f6426fc7c7)
 
 ![HomePage](https://github.com/user-attachments/assets/a81beef8-19d1-4785-a061-7579d70c71b8)
 
