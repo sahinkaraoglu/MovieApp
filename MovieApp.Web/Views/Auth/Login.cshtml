@@ -2,6 +2,154 @@
     ViewData["Title"] = "Giriş";
 }
 
+<style>
+    body {
+        overflow: hidden;
+    }
+
+    .auth-container {
+        height: calc(100vh - 76px);
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        background: #ffffff;
+        margin-top: 56px;
+        padding-top: 5vh;
+    }
+
+    .auth-box {
+        margin: 0 auto;
+        background: white;
+        padding: 2.5rem;
+        border-radius: 15px;
+        border: 3px solid #cbd5e0;
+        box-shadow: 
+            0 6px 15px rgba(0, 0, 0, 0.1),
+            0 0 0 3px rgba(203, 213, 224, 0.3);
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .auth-header h2 {
+        color: #2d3748;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    .auth-header p {
+        color: #666;
+        font-size: 1rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #333;
+        font-weight: 500;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 0.8rem;
+        border: 2px solid #cbd5e0;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        background: #f8fafc;
+    }
+
+    .form-input:focus {
+        background: #ffffff;
+        border-color: #2d3748;
+        box-shadow: 0 0 0 4px rgba(45, 55, 72, 0.15);
+        outline: none;
+    }
+
+    .remember-me {
+        display: flex;
+        align-items: center;
+    }
+
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+        color: #666;
+    }
+
+    .checkbox-container input {
+        margin-right: 8px;
+    }
+
+    .login-button {
+        width: 100%;
+        padding: 1rem;
+        background: #2d3748;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .login-button:hover {
+        background: #1a202c;
+    }
+
+    .login-button:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    #login-error {
+        background-color: #fff5f5;
+        border: 1px solid #feb2b2;
+        color: #c53030;
+        padding: 1rem;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        margin-top: 1rem;
+        display: none;
+    }
+
+    .input-group {
+        position: relative;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #666;
+    }
+
+    .form-input.shake {
+        animation: shake 0.5s linear;
+    }
+
+    @@keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        75% { transform: translateX(10px); }
+    }
+</style>
+
 <div class="auth-container">
     <div class="auth-box">
         <div class="auth-header">
@@ -17,13 +165,16 @@
 
             <div class="form-group">
                 <label>Parola</label>
-                <input type="password" id="password" class="form-input" placeholder="Parolanızı giriniz">
+                <div class="input-group">
+                    <input type="password" id="password" class="form-input" placeholder="Parolanızı giriniz">
+                    <i class="fas fa-eye password-toggle" id="togglePassword" style="cursor: pointer;"></i>
+                </div>
             </div>
 
             <div class="form-group remember-me">
                 <label class="checkbox-container">
-                    <input type="checkbox" id="exampleCheck1">
-                    Beni Hatırla
+                    <input type="checkbox" id="rememberMe">
+                    <span>Beni Hatırla</span>
                 </label>
             </div>
 
@@ -31,15 +182,28 @@
                 Giriş Yap
             </button>
 
-            <div class="alert alert-danger mt-3" id="login-error" style="display: none;"></div>
+            <div id="login-error"></div>
         </form>
     </div>
 </div>
 
-
 @section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
     <script>
         $(document).ready(function() {
+            const passwordInput = $('#password');
+            const icon = $('#togglePassword');
+            
+            icon.on('mouseenter', function() {
+                passwordInput.attr('type', 'text');
+                icon.removeClass('fa-eye').addClass('fa-eye-slash');
+            });
+            
+            icon.on('mouseleave', function() {
+                passwordInput.attr('type', 'password');
+                icon.removeClass('fa-eye-slash').addClass('fa-eye');
+            });
+
             $("#login-form").on('submit', function (e) {
                 e.preventDefault();
 
@@ -47,18 +211,31 @@
 
                 const submitBtn = $(this).find('button[type="submit"]');
                 const originalBtnText = submitBtn.html();
-                submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Giriş yapılıyor...');
-
-                var loginData = {
-                    email: $("#email").val(),
-                    password: $("#password").val(),
+                
+                const email = $("#email").val();
+                const password = $("#password").val();
+                
+                if (!email || !password) {
+                    if (!email) $("#email").addClass('shake');
+                    if (!password) $("#password").addClass('shake');
+                    
+                    setTimeout(() => {
+                        $('.form-input').removeClass('shake');
+                    }, 500);
+                    
+                    return;
                 }
+
+                submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Giriş yapılıyor...');
 
                 $.ajax({
                     url: '/Auth/Login',
                     type: 'POST',
                     contentType: 'application/json',
-                    data: JSON.stringify(loginData),
+                    data: JSON.stringify({
+                        email: email,
+                        password: password
+                    }),
                     success: function(response) {
                         window.location.href = "/";
                     },
@@ -67,19 +244,24 @@
                         if (xhr.responseJSON && xhr.responseJSON.message) {
                             errorMessage = xhr.responseJSON.message;
                         }
-                        $("#login-error").text(errorMessage).fadeIn();
                         
+                        $("#login-error").html(errorMessage).fadeIn();
+                        $("#password").val('').focus();
                         submitBtn.prop('disabled', false).html(originalBtnText);
                         
-                        $("#password").val('').focus();
+                        $('.form-input').addClass('shake');
+                        setTimeout(() => {
+                            $('.form-input').removeClass('shake');
+                        }, 500);
                     }
                 });
+            });
+
+            $('.form-input').focus(function() {
+                $(this).parent().addClass('focused');
+            }).blur(function() {
+                $(this).parent().removeClass('focused');
             });
         });
     </script>
 }
-
-@*                    {
-  "email": "admin@test.com",
-  "password": "admin123*"
-} *@
