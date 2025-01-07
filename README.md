@@ -7,5 +7,6 @@
 
 ![Filmler](https://github.com/user-attachments/assets/add704ac-a403-4686-aa6e-98977dc44a8e)
 
-![Login](https://github.com/user-attachments/assets/c25aa427-aa62-41a3-bac7-ff7b29d8f34a)
+![Login](https://github.com/user-attachments/assets/1260385e-c0df-4ce5-ba84-8c1173d16bd8)
+
 
