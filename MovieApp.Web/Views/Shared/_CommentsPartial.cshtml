@@ -3,29 +3,34 @@
 <div class="row">
     @foreach (var item in Model)
     {
-        <div class="col-12 mt-3">
-            <div class="comment-content w-100">
-                <h1 style="font-size: 20px">@item.User.UserName</h1>
-                <h3 style="font-size: 20px" class="comment-text">@item.Text</h3>
-                <textarea class="form-control edit-comment-text" style="display: none; min-height: 100px; width: 100%; margin: 10px 0; font-size: 16px; padding: 10px;">@item.Text</textarea>
-            </div>
-            @if (Context.Session.GetString("jwt") != null && item.User.UserName == Context.Session.GetString("name"))
-            {
-                <div class="comment-actions mt-2">
-                    <button class="btn btn-primary edit-comment" data-comment-id="@item.Id">
-                        <i class="fas fa-edit"></i> Düzenle
-                    </button>
-                    <button class="btn btn-success save-comment" data-comment-id="@item.Id" style="display: none;">
-                        <i class="fas fa-save"></i> Kaydet
-                    </button>
-                    <button class="btn btn-secondary cancel-edit" style="display: none;">
-                        <i class="fas fa-times"></i> İptal
-                    </button>
-                    <button class="btn btn-danger delete-comment" data-comment-id="@item.Id">
-                        <i class="fas fa-trash"></i> Sil
-                    </button>
+        <div class="col-12 mb-3">
+            <div class="comment-container">
+                <div class="comment-header">
+                    <span class="comment-author">@item.User.UserName</span>
+                    <small class="text-muted">@DateTime.Now.ToString("dd.MM.yyyy HH:mm")</small>
                 </div>
-            }
+                <div class="comment-content">
+                    <p class="comment-text">@item.Text</p>
+                    <textarea class="edit-comment-text" style="display: none;">@item.Text</textarea>
+                </div>
+                @if (Context.Session.GetString("jwt") != null && item.User.UserName == Context.Session.GetString("name"))
+                {
+                    <div class="comment-actions">
+                        <button class="btn btn-primary edit-comment" data-comment-id="@item.Id">
+                            <i class="fas fa-edit"></i> Düzenle
+                        </button>
+                        <button class="btn btn-success save-comment" data-comment-id="@item.Id" style="display: none;">
+                            <i class="fas fa-save"></i> Kaydet
+                        </button>
+                        <button class="btn btn-secondary cancel-edit" style="display: none;">
+                            <i class="fas fa-times"></i> İptal
+                        </button>
+                        <button class="btn btn-danger delete-comment" data-comment-id="@item.Id">
+                            <i class="fas fa-trash"></i> Sil
+                        </button>
+                    </div>
+                }
+            </div>
         </div>
     }
 </div>
