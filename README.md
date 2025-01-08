@@ -3,9 +3,9 @@
 
 ![HomePage](https://github.com/user-attachments/assets/a81beef8-19d1-4785-a061-7579d70c71b8)
 
-![Diziler](https://github.com/user-attachments/assets/e70d6041-877e-4196-beb2-27147d11ef58)
+![Diziler](https://github.com/user-attachments/assets/8ec583f6-d831-4baf-bb80-8bfbebf1a52a)
 
-![Filmler](https://github.com/user-attachments/assets/add704ac-a403-4686-aa6e-98977dc44a8e)
+![Filmler](https://github.com/user-attachments/assets/c4abc1cd-1f76-4003-b170-1e49cac34988)
 
 ![Login](https://github.com/user-attachments/assets/1260385e-c0df-4ce5-ba84-8c1173d16bd8)
 
