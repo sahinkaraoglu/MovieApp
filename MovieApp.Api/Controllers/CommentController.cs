@@ -70,11 +70,11 @@ namespace MovieApp.Api.Controllers
             }
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteComment(int id)
         {
             var userId = GetUserId();
-            var comment = await _context.Comments.FindAsync(id);
+            var comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == id);
 
             if (comment == null)
                 return NotFound();
@@ -84,15 +84,14 @@ namespace MovieApp.Api.Controllers
 
             _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
-
             return Ok();
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateComment(int id, [FromBody] UpdateCommentRequestModel req)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateComment(int id, [FromBody] UpdateCommentRequestModel model)
         {
             var userId = GetUserId();
-            var comment = await _context.Comments.FindAsync(id);
+            var comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == id);
 
             if (comment == null)
                 return NotFound();
@@ -100,9 +99,10 @@ namespace MovieApp.Api.Controllers
             if (comment.UserId != userId)
                 return Unauthorized();
 
-            comment.Text = req.Comment;
-            await _context.SaveChangesAsync();
+            comment.Text = model.Comment;
+            comment.ModifiedDate = DateTime.UtcNow;
 
+            await _context.SaveChangesAsync();
             return Ok();
         }
 

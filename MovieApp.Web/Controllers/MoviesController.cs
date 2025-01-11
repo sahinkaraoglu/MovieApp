@@ -78,16 +78,16 @@ namespace MovieApp.Web.Controllers
             if (string.IsNullOrEmpty(userJwt))
                 return Unauthorized();
 
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {userJwt}");
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {userJwt}");
+                var response = await client.DeleteAsync($"https://localhost:7063/api/comment/{commentId}");
+                
+                if (!response.IsSuccessStatusCode)
+                    return StatusCode((int)response.StatusCode);
 
-            var response = await client.DeleteAsync($"https://localhost:7063/api/comment/{commentId}");
-            
-            if (!response.IsSuccessStatusCode)
-                return BadRequest();
-
-            client.Dispose();
-            return Ok();
+                return Ok();
+            }
         }
 
         [HttpPut("movies/{movieId:int}/comment/{commentId:int}")]
@@ -98,19 +98,20 @@ namespace MovieApp.Web.Controllers
             if (string.IsNullOrEmpty(userJwt))
                 return Unauthorized();
 
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {userJwt}");
-
-            var response = await client.PutAsJsonAsync($"https://localhost:7063/api/comment/{commentId}", new
+            using (HttpClient client = new HttpClient())
             {
-                comment = req.Comment
-            });
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {userJwt}");
+                
+                var response = await client.PutAsJsonAsync(
+                    $"https://localhost:7063/api/comment/{commentId}",
+                    new { comment = req.Comment }
+                );
 
-            if (!response.IsSuccessStatusCode)
-                return BadRequest();
+                if (!response.IsSuccessStatusCode)
+                    return StatusCode((int)response.StatusCode);
 
-            client.Dispose();
-            return Ok();
+                return Ok();
+            }
         }
 
         public class SendCommentRequest
