@@ -47,7 +47,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddDbContext<MovieDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("Db")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {

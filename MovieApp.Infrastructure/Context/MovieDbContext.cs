@@ -18,6 +18,8 @@ namespace MovieApp.Infrastructure.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<ApplicationUser>()
                 .HasMany(e => e.UserLists)
                 .WithOne(e => e.User)
@@ -29,8 +31,6 @@ namespace MovieApp.Infrastructure.Context
                 .WithOne(e => e.User)
                 .HasForeignKey(e => e.UserId)
                 .HasPrincipalKey(e => e.Id);
-
-            base.OnModelCreating(modelBuilder);
         }
 
     }

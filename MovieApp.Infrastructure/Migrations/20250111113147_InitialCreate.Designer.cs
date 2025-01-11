@@ -12,8 +12,8 @@ using MovieApp.Infrastructure.Context;
 namespace MovieApp.Infrastructure.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
-    [Migration("20241222094930_commentTable")]
-    partial class commentTable
+    [Migration("20250111113147_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
