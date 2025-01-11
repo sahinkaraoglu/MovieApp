@@ -1,3 +1,5 @@
+using MovieApp.Domain.Entity;
+
 namespace MovieApp.Infrastructure.Models.MovieDb.Movies
 {
     public class MovieDetailResponseModel
@@ -6,9 +8,8 @@ namespace MovieApp.Infrastructure.Models.MovieDb.Movies
         public List<CommentModel> comments { get; set; }
     }
 
-    public class CommentModel
+    public class CommentModel : BaseEntity
     {
-        public int Id { get; set; }
         public string Text { get; set; }
         public UserModel User { get; set; }
     }

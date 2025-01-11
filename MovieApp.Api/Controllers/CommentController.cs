@@ -28,12 +28,12 @@ namespace MovieApp.Api.Controllers
             var comments = await _context.Comments
                 .Where(c => c.MovieId == movieId)
                 .Include(c => c.User)
-                .OrderByDescending(c => c.CreateDate)
+                .OrderByDescending(c => c.CreatedDate)
                 .Select(c => new
                 {
                     c.Id,
                     c.Text,
-                    c.CreateDate,
+                    c.CreatedDate,
 
                     User = new
                     {
@@ -57,7 +57,7 @@ namespace MovieApp.Api.Controllers
                     Text = req.Comment,
                     UserId = GetUserId(),
                     MovieId = req.Id,
-                    CreateDate = DateTime.UtcNow
+                    CreatedDate = DateTime.UtcNow
                 };
 
                 _rabbitMQService.SendMessage(comment, QUEUE_NAME);
@@ -116,7 +116,7 @@ namespace MovieApp.Api.Controllers
                     Text = "Test mesajı - " + DateTime.Now.ToString(),
                     UserId = "test-user",
                     MovieId = 1,
-                    CreateDate = DateTime.UtcNow
+                    CreatedDate = DateTime.UtcNow
                 };
 
                 Console.WriteLine("Test mesajı gönderiliyor...");

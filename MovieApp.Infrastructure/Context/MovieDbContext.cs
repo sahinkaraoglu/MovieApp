@@ -24,13 +24,19 @@ namespace MovieApp.Infrastructure.Context
                 .HasMany(e => e.UserLists)
                 .WithOne(e => e.User)
                 .HasForeignKey(e => e.UserId)
-                .HasPrincipalKey(e => e.Id);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ApplicationUser>()
                 .HasMany(e => e.Comments)
                 .WithOne(e => e.User)
                 .HasForeignKey(e => e.UserId)
-                .HasPrincipalKey(e => e.Id);
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<UserList>()
+                .HasMany(e => e.ListMovies)
+                .WithOne(e => e.UserList)
+                .HasForeignKey(e => e.UserListId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
     }

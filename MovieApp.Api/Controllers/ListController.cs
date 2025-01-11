@@ -60,7 +60,7 @@ namespace MovieApp.Api.Controllers
 
             await _context.UserLists.AddAsync(new Domain.Entity.UserList
             {
-                CreateDate = DateTime.Now,
+                CreatedDate = DateTime.Now,
                 Title = req.Title,
                 UserId = userId,
             });
@@ -86,7 +86,7 @@ namespace MovieApp.Api.Controllers
                 return NotFound();
 
             userList.Title = req.Title;
-            userList.UpdateDate = DateTime.Now;
+            userList.ModifiedDate = DateTime.Now;
 
             await _context.SaveChangesAsync();
 
@@ -134,7 +134,7 @@ namespace MovieApp.Api.Controllers
 
             await _context.ListMovie.AddAsync(new Domain.Entity.ListMovie
             {
-                CreateDate = DateTime.Now,
+                CreatedDate = DateTime.Now,
                 MovieId = req.MovieId,
                 UserListId = userListId
             });

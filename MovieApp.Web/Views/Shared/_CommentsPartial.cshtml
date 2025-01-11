@@ -7,7 +7,7 @@
             <div class="comment-container">
                 <div class="comment-header">
                     <span class="comment-author">@item.User.UserName</span>
-                    <small class="text-muted">@DateTime.Now.ToString("dd.MM.yyyy HH:mm")</small>
+                    <small class="text-muted">@item.CreatedDate?.ToString("dd.MM.yyyy HH:mm")</small>
                 </div>
                 <div class="comment-content">
                     <p class="comment-text">@item.Text</p>
