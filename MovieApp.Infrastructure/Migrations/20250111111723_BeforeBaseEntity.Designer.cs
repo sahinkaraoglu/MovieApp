@@ -12,7 +12,7 @@ using MovieApp.Infrastructure.Context;
 namespace MovieApp.Infrastructure.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
-    [Migration("20250110215351_BeforeBaseEntity")]
+    [Migration("20250111111723_BeforeBaseEntity")]
     partial class BeforeBaseEntity
     {
         /// <inheritdoc />
