@@ -6,9 +6,9 @@ namespace MovieApp.Infrastructure.MovieDb
 {
     public interface IMovieDbApi
     {
-        Task<PopularTvSeriesModel> GetMoviesAsync();
+        Task<PopularTvSeriesModel> GetTvSeriesAsync();
+        Task<TvSeriesDetailModel> GetTvSeriesDetailByIdAsync(int id);
         Task<PopularMoviesModel> GetPopularMoviesAsync();
-        Task<TvSeriesDetailModel> GetMovieByIdAsync(int id);
         Task<MovieDetailModel> GetMovieDetailByIdAsync(int id);
     }
 }

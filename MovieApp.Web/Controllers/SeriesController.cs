@@ -17,19 +17,19 @@ namespace MovieApp.Web.Controllers
         public async Task<IActionResult> Index()
         {
             HttpClient client = new HttpClient();
-            var response = await client.GetAsync("https://localhost:7063/api/movie");
+            var response = await client.GetAsync("https://localhost:7063/api/series");
             var content = await response.Content.ReadAsStringAsync();
             client.Dispose();
-            var movieResponse = JsonSerializer.Deserialize<PopularTvSeriesModel>(content);
+            var seriesResponse = JsonSerializer.Deserialize<PopularTvSeriesModel>(content);
 
-            return View(movieResponse);
+            return View(seriesResponse);
         }
 
         [HttpGet("series/{id:int}")]
         public async Task<IActionResult> Detail(int id)
         {
             HttpClient client = new HttpClient();
-            var response = await client.GetAsync($"https://localhost:7063/api/movie/{id}");
+            var response = await client.GetAsync($"https://localhost:7063/api/series/{id}");
             var content = await response.Content.ReadAsStringAsync();
             client.Dispose();
             var movieResponse = JsonSerializer.Deserialize<MovieDetailResponseModel>(content, new JsonSerializerOptions
