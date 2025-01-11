@@ -28,7 +28,7 @@ namespace MovieApp.Api.Controllers
             var comments = await _context.Comments
                 .Where(c => c.MovieId == movieId)
                 .Include(c => c.User)
-                .OrderByDescending(c => c.CreatedDate)
+                .OrderBy(c => c.CreatedDate)
                 .Select(c => new
                 {
                     c.Id,
