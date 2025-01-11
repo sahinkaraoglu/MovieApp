@@ -54,7 +54,8 @@ namespace MovieApp.Web.Controllers
             var response = await client.PostAsJsonAsync("https://localhost:7063/api/comment", new
             {
                 id = id,
-                comment = req.Comment
+                comment = req.Comment,
+                type = "series"
             });
             var content = await response.Content.ReadAsStringAsync();
             client.Dispose();

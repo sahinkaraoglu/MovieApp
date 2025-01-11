@@ -47,6 +47,30 @@ namespace MovieApp.Api.Controllers
             return Ok(comments);
         }
 
+        [HttpGet("series/{seriesId:int}")]
+        public async Task<IActionResult> GetSeriesComments(int seriesId)
+        {
+            var comments = await _context.Comments
+                .Where(c => c.SeriesId == seriesId)
+                .Include(c => c.User)
+                .OrderBy(c => c.CreatedDate)
+                .Select(c => new
+                {
+                    c.Id,
+                    c.Text,
+                    c.CreatedDate,
+                    User = new
+                    {
+                        c.User.Id,
+                        c.User.UserName,
+                        c.User.Email
+                    }
+                })
+                .ToListAsync();
+
+            return Ok(comments);
+        }
+
         [HttpPost("")]
         public IActionResult SendComment([FromBody] SendCommentRequestModel req)
         {
@@ -56,9 +80,19 @@ namespace MovieApp.Api.Controllers
                 {
                     Text = req.Comment,
                     UserId = GetUserId(),
-                    MovieId = req.Id,
                     CreatedDate = DateTime.UtcNow
                 };
+
+                if (req.Type == "movie")
+                {
+                    comment.MovieId = req.Id;
+                    comment.SeriesId = null;
+                }
+                else if (req.Type == "series")
+                {
+                    comment.SeriesId = req.Id;
+                    comment.MovieId = null;
+                }
 
                 _rabbitMQService.SendMessage(comment, QUEUE_NAME);
                 

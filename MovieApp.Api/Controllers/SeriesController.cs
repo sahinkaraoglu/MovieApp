@@ -47,7 +47,7 @@ namespace MovieApp.Api.Controllers
             var comments = await _context
                 .Comments
                 .Include(e => e.User)
-                .Where(e => e.MovieId == id)
+                .Where(e => e.SeriesId == id)
                 .ToListAsync();
 
             return Ok(new

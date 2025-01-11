@@ -2,13 +2,17 @@ $(document).ready(function () {
     $("#comment-form").on('submit', function (e) {
         e.preventDefault();
         
+        var url = window.location.pathname;
+        var type = url.includes('/movies/') ? 'movie' : 'series';
+        var id = url.split('/')[2];
+        
         var commentData = {
             comment: $("#commentArea").val(),
+            id: id,
+            type: type
         }
         
-        var url = window.location.pathname;
-        var endpoint = url.includes('/movies/') ? '/movies/' : '/series/';
-        var id = url.split('/')[2];
+        var endpoint = type === 'movie' ? '/movies/' : '/series/';
         
         $.ajax({
             url: endpoint + id + '/comment',
