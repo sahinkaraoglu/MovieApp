@@ -60,7 +60,7 @@ The project follows Clean Architecture principles with the following layers:
 
 1. **Prerequisites**
 
-   -Visual Studio 2022 veya daha yenisi
+   - Visual Studio 2022 or newer
 
    - SQL Server
 
