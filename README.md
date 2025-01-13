@@ -60,9 +60,9 @@ The project follows Clean Architecture principles with the following layers:
 
    - Update connection string in `MovieApp.Api/appsettings.json`:
 
-   -  ```json
+   ```json
 
-  "ConnectionStrings": {
+   "ConnectionStrings": {
      "DefaultConnection": "Server=YOUR_SERVER;Database=MovieApp;Trusted_Connection=True;TrustServerCertificate=True"
 
 3. **Access**
