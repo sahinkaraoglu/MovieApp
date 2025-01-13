@@ -30,6 +30,7 @@ A modern web application for exploring movies and TV series, built with .NET Cor
   - Entity Framework Core
   - SQL Server
   - RabbitMQ for message queuing
+  - Redis for caching
   - JWT Authentication
 
 - **Frontend:**
