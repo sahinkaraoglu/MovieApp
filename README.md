@@ -47,13 +47,6 @@ The project follows Clean Architecture principles with the following layers:
 - MovieApp.Infrastructure
 - MovieApp.Web
 
-## Prerequisites
-
-- .NET 8.0 SDK
-- SQL Server
-- RabbitMQ
-- Visual Studio 2022 or VS Code
-
 ## Setup
 
 1. **Prerequisites**
