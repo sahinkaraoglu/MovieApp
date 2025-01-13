@@ -61,22 +61,9 @@ The project follows Clean Architecture principles with the following layers:
    - SQL Server
    - RabbitMQ Server
      
-2. **Open Project in Visual Studio**
-   - Open MovieApp.sln with Visual Studio
-   - Right click on Solution and select "Restore NuGet Packages"
-   - Rebuild the Solution
-3. **Database Configuration**
-
-   - Update connection string in `MovieApp.Api/appsettings.json`:
-
-   ```json
-
-   "ConnectionStrings": {
-
-     "DefaultConnection": "Server=YOUR_SERVER;Database=MovieApp;Trusted_Connection=True;TrustServerCertificate=True"
+2. **Database Configuration**
+   - Update connection string in `MovieApp.Api/appsettings.json`: ```json "ConnectionStrings": {"DefaultConnection": "Server=YOUR_SERVER;Database=MovieApp;Trusted_Connection=True;TrustServerCertificate=True"
 
 3. **Access**
-
    - Web: `https://localhost:7242`
-
    - API Docs: `https://localhost:7063/swagger`
