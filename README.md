@@ -2,8 +2,6 @@
 
 A modern web application for exploring movies and TV series, built with .NET Core 8.0 using clean architecture principles.
 
-![HomePageFirst](https://github.com/user-attachments/assets/b50a42b0-a37f-432f-b936-c5f6426fc7c7)
-
 ![HomePage](https://github.com/user-attachments/assets/a81beef8-19d1-4785-a061-7579d70c71b8)
 
 ![Diziler](https://github.com/user-attachments/assets/8ec583f6-d831-4baf-bb80-8bfbebf1a52a)
