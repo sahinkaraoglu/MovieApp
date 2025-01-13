@@ -58,9 +58,9 @@ The project follows Clean Architecture principles with the following layers:
 2. **Database Configuration**
 
    - Update connection string in `MovieApp.Api/appsettings.json`:
+     
 
    ```json
-
 
    "ConnectionStrings": {
 
