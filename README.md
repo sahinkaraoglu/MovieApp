@@ -59,18 +59,13 @@ The project follows Clean Architecture principles with the following layers:
 ## Setup
 
 1. **Prerequisites**
-
    - Visual Studio 2022 or newer
-
    - SQL Server
-
    - RabbitMQ Server
+     
 2. **Open Project in Visual Studio**
-
    - Open MovieApp.sln with Visual Studio
-
    - Right click on Solution and select "Restore NuGet Packages"
-
    - Rebuild the Solution
 3. **Database Configuration**
 
@@ -82,20 +77,8 @@ The project follows Clean Architecture principles with the following layers:
 
      "DefaultConnection": "Server=YOUR_SERVER;Database=MovieApp;Trusted_Connection=True;TrustServerCertificate=True"
 
-4. **Run the Project**
+3. **Access**
 
-   - Right click on Solution and select "Set Startup Projects"
+   - Web: `https://localhost:7242`
 
-   - Choose "Multiple startup projects"
-
-   - Set Action to "Start" for both MovieApp.Api and MovieApp.Web
-
-   - Press F5 to start the application
-
-
-
-5. **Access**
-
-   - Web Interface: `https://localhost:7242`
-
-   - API Documentation: `https://localhost:7063/swagger`
+   - API Docs: `https://localhost:7063/swagger`
