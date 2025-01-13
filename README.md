@@ -60,6 +60,7 @@ The project follows Clean Architecture principles with the following layers:
    - Visual Studio 2022 or newer
    - SQL Server
    - RabbitMQ Server
+   - Redis Server
      
 2. **Database Configuration**
 
