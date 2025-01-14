@@ -2,37 +2,28 @@
 
 A modern web application for exploring movies and TV series, built with .NET Core 8.0 using clean architecture principles.
 
-![HomePage](https://github.com/user-attachments/assets/a81beef8-19d1-4785-a061-7579d70c71b8)
-
-![Diziler](https://github.com/user-attachments/assets/8ec583f6-d831-4baf-bb80-8bfbebf1a52a)
-
-![Filmler](https://github.com/user-attachments/assets/c4abc1cd-1f76-4003-b170-1e49cac34988)
-
-![Swagger](https://github.com/user-attachments/assets/2c84e97e-447c-4a0e-b400-1bf26e5bc5b9)
-
-![Login](https://github.com/user-attachments/assets/1260385e-c0df-4ce5-ba84-8c1173d16bd8)
-
 
 <div align="center">
     <table>
         <tr>
             <td>
-                <img src="https://github.com/user-attachments/assets/a81beef8-19d1-4785-a061-7579d70c71b8" alt="HomePage" width="200"/>
+                <img src="https://github.com/user-attachments/assets/a81beef8-19d1-4785-a061-7579d70c71b8" alt="HomePage" width="400"/>
             </td>
             <td>
-                <img src="https://github.com/user-attachments/assets/8ec583f6-d831-4baf-bb80-8bfbebf1a52a" alt="Diziler" width="200"/>
+                <img src="https://github.com/user-attachments/assets/8ec583f6-d831-4baf-bb80-8bfbebf1a52a" alt="Diziler" width="400"/>
             </td>
         </tr>
         <tr>
             <td>
-                <img src="https://github.com/user-attachments/assets/c4abc1cd-1f76-4003-b170-1e49cac34988" alt="Filmler" width="200"/>
+                <img src="https://github.com/user-attachments/assets/c4abc1cd-1f76-4003-b170-1e49cac34988" alt="Filmler" width="400"/>
             </td>
             <td>
-                <img src="https://github.com/user-attachments/assets/2c84e97e-447c-4a0e-b400-1bf26e5bc5b9" alt="Swagger" width="200"/>
+                <img src="https://github.com/user-attachments/assets/2c84e97e-447c-4a0e-b400-1bf26e5bc5b9" alt="Swagger" width="400"/>
             </td>
         </tr>
     </table>
 </div>
+
 
 
 
