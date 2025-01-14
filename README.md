@@ -10,7 +10,7 @@ A modern web application for exploring movies and TV series, built with .NET Cor
                 <img src="https://github.com/user-attachments/assets/a81beef8-19d1-4785-a061-7579d70c71b8" alt="HomePage" width="400"/>
             </td>
             <td>
-                <img src="https://github.com/user-attachments/assets/0d26ebf8-2c6c-40ec-b321-e7272910e520" alt="HomePage2" width="400"/>
+                <img src="https://github.com/user-attachments/assets/1558cdee-e2fd-45f6-b69f-c913b0e7bca5" alt="HomePage2" width="400"/>
             </td>
         </tr>
         <tr>
