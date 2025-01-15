@@ -1,20 +1,7 @@
-# MovieApp 🎬
+# MovieApp
 
-<div align="center">
+A modern web application for exploring movies and TV series, built with .NET Core 8.0 using clean architecture principles.
 
-    <h3>A modern web application for exploring movies and TV series</h3>
-
-    <p>Built with .NET Core 8.0 using clean architecture principles</p>
-
-</div>
-
-<div align="center">
-
-    <h3>A modern web application for exploring movies and TV series</h3>
-
-    <p>Built with .NET Core 8.0 using clean architecture principles</p>
-
-</div>
 
 <div align="center">
     <table>
