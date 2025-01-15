@@ -2,19 +2,12 @@
 
 <div align="center">
 
-    <h3>A modern web application for exploring movies and TV series</h3>
+    A modern web application for exploring movies and TV series
 
-    <p>Built with .NET Core 8.0 using clean architecture principles</p>
-
-</div>
-
-<div align="center">
-
-    <h3>A modern web application for exploring movies and TV series</h3>
-
-    <p>Built with .NET Core 8.0 using clean architecture principles</p>
+    Built with .NET Core 8.0 using clean architecture principles
 
 </div>
+
 
 <div align="center">
     <table>
