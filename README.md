@@ -5,9 +5,7 @@
         <p>A modern web application built with .NET Core 8.0 using clean architecture principles.</p>
     </p>
 </div>
-
 ## 📸 Screenshots
-<div>
     <table>
         <tr>
             <td>
@@ -93,6 +91,29 @@ The project follows Clean Architecture principles with the following layers:
 
 
 
+## ✨ Features
+<table>
+  <tr>
+    <td>🎬 Content</td>
+    <td>Browse popular movies and TV series with detailed information</td>
+  </tr>
+  <tr>
+    <td>👥 Users</td>
+    <td>User authentication and authorization with JWT</td>
+  </tr>
+  <tr>
+    <td>💬 Comments</td>
+    <td>Real-time commenting system powered by RabbitMQ</td>
+  </tr>
+  <tr>
+    <td>🚀 Performance</td>
+    <td>Redis caching for improved response times</td>
+  </tr>
+  <tr>
+    <td>🎨 UI/UX</td>
+    <td>Modern, responsive design that works on all devices</td>
+  </tr>
+</table>
 ## 🛠 Technology Stack
 
 <details>
@@ -111,9 +132,13 @@ The project follows Clean Architecture principles with the following layers:
 - **JavaScript:** jQuery
 - **Styling:** Modern CSS with responsive design
 </details>
-
-
-
+## 🏗 Architecture
+The project follows Clean Architecture principles with the following layers:
+## 🚀 Setup & Installation
+### Prerequisites
+- Visual Studio 2022 or newer
+- SQL Server
+- Docker Desktop
 
 ### 1. Clone the Repository
 ```bash
