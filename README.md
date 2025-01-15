@@ -46,8 +46,8 @@ A modern web application for exploring movies and TV series, built with .NET Cor
   - ASP.NET Core 8.0
   - Entity Framework Core
   - SQL Server
-  - RabbitMQ for message queuing
-  - Redis for caching
+  - Dockerized RabbitMQ for message queuing
+  - Dockerized Redis for caching
   - JWT Authentication
 
 - **Frontend:**
@@ -70,8 +70,7 @@ The project follows Clean Architecture principles with the following layers:
 1. **Prerequisites**
    - Visual Studio 2022 or newer
    - SQL Server
-   - RabbitMQ Server
-   - Redis Server
+   - Docker (for RabbitMQ and Redis)
      
 2. **Database Configuration**
 
