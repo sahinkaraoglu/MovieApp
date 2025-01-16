@@ -86,12 +86,11 @@ The project follows Clean Architecture principles with the following layers:
    - API Docs: `https://localhost:7063/swagger`
   
 
-
 # 🎬 MovieApp
 
 <div align="center">
-    <h3>Modern bir film ve dizi keşif platformu</h3>
-    <p>Clean Architecture prensiplerine uygun olarak .NET Core 8.0 ile geliştirilmiştir.</p>
+    <h3>A Modern Movie and TV Series Discovery Platform</h3>
+    <p>Built with .NET Core 8.0 following Clean Architecture principles</p>
 
 [![.NET Core](https://img.shields.io/badge/-.NET%20Core%208.0-512BD4?style=for-the-badge&logo=.net&logoColor=white)](https://dotnet.microsoft.com/)
 [![EF Core](https://img.shields.io/badge/-EF%20Core-512BD4?style=for-the-badge&logo=.net&logoColor=white)](https://docs.microsoft.com/ef/core/)
@@ -99,45 +98,45 @@ The project follows Clean Architecture principles with the following layers:
 [![RabbitMQ](https://img.shields.io/badge/-RabbitMQ-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white)](https://www.rabbitmq.com/)
 </div>
 
-## 📸 Ekran Görüntüleri
+## 📸 Screenshots
 
 <div align="center">
     <table>
         <tr>
             <td>
-                <img src="https://github.com/user-attachments/assets/a81beef8-19d1-4785-a061-7579d70c71b8" alt="Ana Sayfa" width="400"/>
-                <p align="center"><em>Ana Sayfa</em></p>
+                <img src="https://github.com/user-attachments/assets/a81beef8-19d1-4785-a061-7579d70c71b8" alt="Home Page" width="400"/>
+                <p align="center"><em>Home Page</em></p>
             </td>
             <td>
-                <img src="https://github.com/user-attachments/assets/80b7b03d-6aa4-4b3e-9fe4-6a02dd9dbd52" alt="Keşfet" width="400"/>
-                <p align="center"><em>Keşfet Sayfası</em></p>
+                <img src="https://github.com/user-attachments/assets/80b7b03d-6aa4-4b3e-9fe4-6a02dd9dbd52" alt="Discover" width="400"/>
+                <p align="center"><em>Discover Page</em></p>
             </td>
         </tr>
         <tr>
             <td>
-                <img src="https://github.com/user-attachments/assets/8ec583f6-d831-4baf-bb80-8bfbebf1a52a" alt="Diziler" width="400"/>
-                <p align="center"><em>Dizi Listesi</em></p>
+                <img src="https://github.com/user-attachments/assets/8ec583f6-d831-4baf-bb80-8bfbebf1a52a" alt="TV Series" width="400"/>
+                <p align="center"><em>TV Series List</em></p>
             </td>
             <td>
-                <img src="https://github.com/user-attachments/assets/c4abc1cd-1f76-4003-b170-1e49cac34988" alt="Filmler" width="400"/>
-                <p align="center"><em>Film Listesi</em></p>
+                <img src="https://github.com/user-attachments/assets/c4abc1cd-1f76-4003-b170-1e49cac34988" alt="Movies" width="400"/>
+                <p align="center"><em>Movies List</em></p>
             </td>
         </tr>
     </table>
 </div>
 
-## ✨ Özellikler
+## ✨ Features
 
-- 🎬 Popüler film ve dizileri keşfedin
-- 👥 Kullanıcı hesabı oluşturun ve yönetin
-- 💬 RabbitMQ ile gerçek zamanlı yorum sistemi
-- 🎯 Clean Architecture yapısı
-- 🔒 JWT tabanlı güvenli kimlik doğrulama
-- 🎨 Modern ve duyarlı arayüz tasarımı
-- 📱 Mobil uyumlu tasarım
-- 🚀 Yüksek performans için Redis önbelleği
+- 🎬 Discover popular movies and TV series
+- 👥 Create and manage user accounts
+- 💬 Real-time commenting system using RabbitMQ
+- 🎯 Clean Architecture implementation
+- 🔒 Secure JWT-based authentication
+- 🎨 Modern and responsive UI design
+- 📱 Mobile-friendly interface
+- 🚀 Redis caching for high performance
 
-## 🛠 Teknoloji Altyapısı
+## 🛠 Technology Stack
 
 ### Backend
 - **.NET Core 8.0**
@@ -146,16 +145,13 @@ The project follows Clean Architecture principles with the following layers:
   - CQRS Pattern
   - Repository Pattern
   
-### Veritabanı & Önbellek
-- **SQL Server** - Ana veritabanı
-- **Redis** - Önbellek sistemi
-- **RabbitMQ** - Mesaj kuyruğu
+### Database & Caching
+- **SQL Server** - Primary database
+- **Redis** - Caching system
+- **RabbitMQ** - Message queue
 
 ### Frontend
 - **ASP.NET Core MVC**
 - **Bootstrap 5**
 - **jQuery**
 - **Modern CSS**
-
-## 🏗 Mimari Yapı
-
