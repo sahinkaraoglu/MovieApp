@@ -1,7 +1,16 @@
-# MovieApp
+# 🎬 MovieApp
 
-A modern web application for exploring movies and TV series, built with .NET Core 8.0 using clean architecture principles.
+<div align="center">
+    <h3>A Modern Movie and TV Series Discovery Platform</h3>
+    <p>Built with .NET Core 8.0 following Clean Architecture principles</p>
 
+[![.NET Core](https://img.shields.io/badge/-.NET%20Core%208.0-512BD4?style=for-the-badge&logo=.net&logoColor=white)](https://dotnet.microsoft.com/)
+[![EF Core](https://img.shields.io/badge/-EF%20Core-512BD4?style=for-the-badge&logo=.net&logoColor=white)](https://docs.microsoft.com/ef/core/)
+[![Docker](https://img.shields.io/badge/-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![RabbitMQ](https://img.shields.io/badge/-RabbitMQ-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white)](https://www.rabbitmq.com/)
+</div>
+
+## Screenshots
 
 <div align="center">
     <table>
@@ -85,73 +94,3 @@ The project follows Clean Architecture principles with the following layers:
    - Web: `https://localhost:7242`
    - API Docs: `https://localhost:7063/swagger`
   
-
-# 🎬 MovieApp
-
-<div align="center">
-    <h3>A Modern Movie and TV Series Discovery Platform</h3>
-    <p>Built with .NET Core 8.0 following Clean Architecture principles</p>
-
-[![.NET Core](https://img.shields.io/badge/-.NET%20Core%208.0-512BD4?style=for-the-badge&logo=.net&logoColor=white)](https://dotnet.microsoft.com/)
-[![EF Core](https://img.shields.io/badge/-EF%20Core-512BD4?style=for-the-badge&logo=.net&logoColor=white)](https://docs.microsoft.com/ef/core/)
-[![Docker](https://img.shields.io/badge/-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
-[![RabbitMQ](https://img.shields.io/badge/-RabbitMQ-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white)](https://www.rabbitmq.com/)
-</div>
-
-## 📸 Screenshots
-
-<div align="center">
-    <table>
-        <tr>
-            <td>
-                <img src="https://github.com/user-attachments/assets/a81beef8-19d1-4785-a061-7579d70c71b8" alt="Home Page" width="400"/>
-                <p align="center"><em>Home Page</em></p>
-            </td>
-            <td>
-                <img src="https://github.com/user-attachments/assets/80b7b03d-6aa4-4b3e-9fe4-6a02dd9dbd52" alt="Discover" width="400"/>
-                <p align="center"><em>Discover Page</em></p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img src="https://github.com/user-attachments/assets/8ec583f6-d831-4baf-bb80-8bfbebf1a52a" alt="TV Series" width="400"/>
-                <p align="center"><em>TV Series List</em></p>
-            </td>
-            <td>
-                <img src="https://github.com/user-attachments/assets/c4abc1cd-1f76-4003-b170-1e49cac34988" alt="Movies" width="400"/>
-                <p align="center"><em>Movies List</em></p>
-            </td>
-        </tr>
-    </table>
-</div>
-
-## ✨ Features
-
-- 🎬 Discover popular movies and TV series
-- 👥 Create and manage user accounts
-- 💬 Real-time commenting system using RabbitMQ
-- 🎯 Clean Architecture implementation
-- 🔒 Secure JWT-based authentication
-- 🎨 Modern and responsive UI design
-- 📱 Mobile-friendly interface
-- 🚀 Redis caching for high performance
-
-## 🛠 Technology Stack
-
-### Backend
-- **.NET Core 8.0**
-  - Clean Architecture
-  - Entity Framework Core
-  - CQRS Pattern
-  - Repository Pattern
-  
-### Database & Caching
-- **SQL Server** - Primary database
-- **Redis** - Caching system
-- **RabbitMQ** - Message queue
-
-### Frontend
-- **ASP.NET Core MVC**
-- **Bootstrap 5**
-- **jQuery**
-- **Modern CSS**
