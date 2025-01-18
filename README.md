@@ -10,8 +10,6 @@
 [![RabbitMQ](https://img.shields.io/badge/-RabbitMQ-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white)](https://www.rabbitmq.com/)
 </div>
 
-## Screenshots
-
 <div align="center">
     <table>
         <tr>
