@@ -1,4 +1,6 @@
+<div align="center">
 # 🎬 MovieApp
+</div>
 
 <div align="center">
     <h3>A Modern Movie and TV Series Discovery Platform</h3>
