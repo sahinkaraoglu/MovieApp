@@ -1,5 +1,5 @@
 <div  align="center">
-<h6> # 🎬 MovieApp  </h6>
+<h1> # 🎬 MovieApp  </h1>
 </div>
 
 <div align="center">
